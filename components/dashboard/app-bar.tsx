@@ -15,14 +15,14 @@ export function AppBar({
   loading: boolean;
 }) {
   return (
-    <header className="relative grid grid-cols-[auto_1fr_auto] items-center gap-3 rounded-2xl border border-[var(--line)] bg-[linear-gradient(120deg,rgba(255,255,255,.93),rgba(243,248,255,.88))] px-3 py-2 shadow-[0_14px_34px_rgba(17,29,54,.12)] backdrop-blur-md">
+    <header className="relative grid grid-cols-[auto_1fr_auto] items-center gap-3 rounded-2xl border border-[var(--line)] bg-[linear-gradient(120deg,rgba(255,255,255,.93),rgba(243,248,255,.88))] px-3 py-2 shadow-[0_14px_34px_rgba(17,29,54,.12)] backdrop-blur-md dark:bg-[linear-gradient(120deg,rgba(15,26,46,.92),rgba(13,22,38,.9))]">
       <div className="flex min-w-0 items-center gap-2.5">
         <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-[linear-gradient(135deg,#ffb703,#ff6b35)] text-xs font-black text-slate-900 shadow-[0_8px_18px_rgba(255,107,53,.35)]">
           DD
         </span>
         <div className="min-w-0">
-          <p className="m-0 truncate font-[var(--font-montserrat)] text-[0.95rem] font-black leading-tight text-[var(--ink)]">Data Dash Arena</p>
-          <small className="m-0 hidden truncate text-[0.7rem] text-[var(--muted)] sm:block">Intelligence Console</small>
+          <p className="m-0 truncate font-[var(--font-montserrat)] text-[0.95rem] font-black leading-tight text-[var(--ink)] dark:text-[#e6efff]">Data Dash Arena</p>
+          <small className="m-0 hidden truncate text-[0.7rem] text-[var(--muted)] dark:text-[#afc2e8] sm:block">Intelligence Console</small>
         </div>
       </div>
 

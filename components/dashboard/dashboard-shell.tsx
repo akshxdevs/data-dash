@@ -87,7 +87,7 @@ const panelCls =
   "rounded-2xl border border-[var(--line)] bg-[var(--panel-bg)] p-[14px] shadow-[0_8px_22px_rgba(17,29,54,.07)] transition hover:-translate-y-[3px] hover:border-[#cadbff] hover:shadow-[0_18px_36px_rgba(20,35,62,.12)]";
 
 const controlInputCls =
-  "rounded-[9px] border border-[#d4e0fb] bg-white px-2.5 py-[7px] text-[0.8rem] text-[#2b3d61] outline-none focus:border-[#90b2ff]";
+  "rounded-[9px] border border-[#d4e0fb] bg-white px-2.5 py-[7px] text-[0.8rem] text-[#2b3d61] outline-none focus:border-[#90b2ff] dark:border-[#2a3b5e] dark:bg-[#0c1527] dark:text-[#d9e5ff]";
 
 export function DashboardShell({
   initialData,
@@ -296,6 +296,9 @@ export function DashboardShell({
         <span className="absolute left-[-40px] top-3 h-[220px] w-[220px] rounded-full bg-[radial-gradient(circle,rgba(255,107,53,.35),rgba(255,107,53,0))] [animation:drift_16s_ease-in-out_infinite]" />
         <span className="absolute right-[6%] top-[-40px] h-[260px] w-[260px] rounded-full bg-[radial-gradient(circle,rgba(58,134,255,.3),rgba(58,134,255,0))] [animation:drift_16s_ease-in-out_infinite] [animation-delay:2s]" />
         <span className="absolute right-[30%] top-[54px] h-[180px] w-[180px] rounded-full bg-[radial-gradient(circle,rgba(7,190,184,.35),rgba(7,190,184,0))] [animation:drift_16s_ease-in-out_infinite] [animation-delay:4s]" />
+        <span className="absolute left-[10%] top-[18%] h-[220px] w-[420px] rounded-[999px] bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,.35),rgba(255,255,255,0))] blur-3xl [animation:smokeFloat_18s_ease-in-out_infinite]" />
+        <span className="absolute right-[8%] top-[8%] h-[180px] w-[360px] rounded-[999px] bg-[radial-gradient(ellipse_at_center,rgba(130,167,255,.22),rgba(130,167,255,0))] blur-3xl [animation:smokeFloat_22s_ease-in-out_infinite] [animation-delay:3s]" />
+        <span className="absolute left-[35%] top-[34%] h-[170px] w-[300px] rounded-[999px] bg-[radial-gradient(ellipse_at_center,rgba(255,186,120,.18),rgba(255,186,120,0))] blur-3xl [animation:smokeFloat_20s_ease-in-out_infinite] [animation-delay:6s]" />
       </div>
 
       <AppBar
@@ -314,8 +317,8 @@ export function DashboardShell({
               className={cn(
                 "cursor-pointer rounded-full border px-2.5 py-1.5 text-[0.75rem]",
                 item === interval
-                  ? "border-[#0e1728] bg-[#0e1728] text-white"
-                  : "border-[#d4e0fb] bg-[#f5f9ff] text-[#35496f]",
+                  ? "border-[#0e1728] bg-[#0e1728] text-white dark:border-[#ffd166] dark:bg-[#ffd166] dark:text-[#17233d]"
+                  : "border-[#d4e0fb] bg-[#f5f9ff] text-[#35496f] dark:border-[#2d4066] dark:bg-[#13213a] dark:text-[#c9d7f5]",
               )}
               onClick={() => setInterval(item)}
               type="button"
@@ -328,7 +331,7 @@ export function DashboardShell({
 
         <div className="flex flex-wrap items-center gap-2 rounded-xl border border-[var(--line)] bg-[var(--surface-2)] p-2.5">
           <input className={controlInputCls} value={presetName} onChange={(e) => setPresetName(e.target.value)} placeholder="Preset name" />
-          <button className="rounded-[9px] border border-[#1b2c4b] bg-[#1b2c4b] px-2.5 py-[7px] text-[0.8rem] text-white" onClick={savePreset} type="button">Save Preset</button>
+          <button className="rounded-[9px] border border-[#1b2c4b] bg-[#1b2c4b] px-2.5 py-[7px] text-[0.8rem] text-white dark:border-[#ffd166] dark:bg-[#ffd166] dark:text-[#17233d]" onClick={savePreset} type="button">Save Preset</button>
           <select
             className={controlInputCls}
             defaultValue=""
@@ -345,24 +348,30 @@ export function DashboardShell({
         </div>
       </section>
 
-      <section className={cn(panelCls)}>
-        <header className="mb-2 flex items-baseline justify-between gap-2.5">
-          <h2 className="m-0 font-[var(--font-montserrat)] text-[1.12rem] font-extrabold">Watchlist Builder</h2>
-          <span className="text-[0.77rem] text-[var(--muted)]">Pick at least 3</span>
+      <section className={cn(panelCls, "dark:border-[#31466f] dark:bg-[linear-gradient(170deg,rgba(18,30,53,.96),rgba(14,24,43,.96))]")}>
+        <header className="mb-2 flex items-baseline justify-between gap-2.5 border-b border-[var(--line)] pb-2 dark:border-[#2c3f65]">
+          <h2 className="m-0 font-[var(--font-montserrat)] text-[1.12rem] font-extrabold text-[var(--ink)] dark:text-[#e6efff]">Watchlist Builder</h2>
+          <span className="text-[0.77rem] text-[var(--muted)] dark:text-[#afc2e8]">Pick at least 3</span>
         </header>
         <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-          {availableCoins.map((coin) => (
-            <label key={coin.id} className="grid grid-cols-[auto_1fr] items-center gap-x-2 gap-y-0.5 rounded-[10px] border border-[#d8e4ff] bg-[#f8fbff] p-2">
+          {availableCoins.map((coin) => {
+            const checked = watchlistIds.includes(coin.id);
+            return (
+            <label key={coin.id} className={cn(
+              "grid grid-cols-[auto_1fr] items-center gap-x-2 gap-y-0.5 rounded-[10px] border border-[#d8e4ff] bg-[#f8fbff] p-2 transition",
+              "dark:border-[#2a3d63] dark:bg-[#101a2f] dark:hover:border-[#3b5688]",
+              checked && "border-[#8eb4ff] bg-[#eef5ff] dark:border-[#5d83c7] dark:bg-[#162441]",
+            )}>
               <input
-                className="row-span-2"
+                className="row-span-2 accent-[#3a86ff]"
                 type="checkbox"
                 checked={watchlistIds.includes(coin.id)}
                 onChange={() => toggleWatch(coin.id)}
               />
-              <span className="text-[0.82rem] font-bold">{coin.symbol}</span>
-              <small className="text-[0.73rem] text-[var(--muted)]">{coin.name}</small>
+              <span className="text-[0.82rem] font-bold text-[var(--ink)] dark:text-[#e3edff]">{coin.symbol}</span>
+              <small className="text-[0.73rem] text-[var(--muted)] dark:text-[#9eb3da]">{coin.name}</small>
             </label>
-          ))}
+          )})}
         </div>
       </section>
 
@@ -411,7 +420,7 @@ export function DashboardShell({
           <p className="m-0 text-[0.82rem] text-[var(--muted)]">Correlation <strong className="text-[var(--ink)]">{compareCorrelation.toFixed(2)}</strong></p>
         </div>
         <div className="grid gap-2.5 xl:grid-cols-[1.4fr_1fr]">
-          <article className="rounded-xl border border-[#dbe6ff] bg-[#f8fbff] p-2.5">
+          <article className="rounded-xl border border-[#dbe6ff] bg-[#f8fbff] p-2.5 dark:border-[#26375b] dark:bg-[#101a2f]">
             <h4 className="m-0 font-[var(--font-montserrat)] text-[0.95rem] font-extrabold">{compareTokenA?.symbol} vs {compareTokenB?.symbol}</h4>
             <svg viewBox="0 0 220 70" className="mt-2 h-[72px] w-full" aria-hidden="true">
               <path d={linePath(relativeDiff, 220, 70, 8)} fill="none" stroke="#ff6b35" strokeWidth="3" />
@@ -420,7 +429,7 @@ export function DashboardShell({
               Relative edge: <strong className={cn((relativeDiff[relativeDiff.length - 1] ?? 0) >= 0 ? "text-[#0f9f84]" : "text-[#ce355c]")}>{formatSignedPct(relativeDiff[relativeDiff.length - 1] ?? 0)}</strong>
             </p>
           </article>
-          <article className="rounded-xl border border-[#dbe6ff] bg-[#f8fbff] p-2.5">
+          <article className="rounded-xl border border-[#dbe6ff] bg-[#f8fbff] p-2.5 dark:border-[#26375b] dark:bg-[#101a2f]">
             <h4 className="m-0 font-[var(--font-montserrat)] text-[0.95rem] font-extrabold">Quick Stats</h4>
             <p className="mt-2 text-[0.82rem] text-[var(--muted)]">{compareTokenA?.symbol}: {formatCurrency(compareTokenA?.marketCap ?? 0)}</p>
             <p className="mt-2 text-[0.82rem] text-[var(--muted)]">{compareTokenB?.symbol}: {formatCurrency(compareTokenB?.marketCap ?? 0)}</p>
@@ -436,7 +445,7 @@ export function DashboardShell({
         </header>
         <div className="grid gap-2.5 md:grid-cols-2 xl:grid-cols-3">
           {data.tokens.map((token) => (
-            <article key={token.id} className="rounded-xl border border-[#dbe6ff] bg-[#f9fbff] p-2.5">
+            <article key={token.id} className="rounded-xl border border-[#dbe6ff] bg-[#f9fbff] p-2.5 dark:border-[#26375b] dark:bg-[#101a2f]">
               <div className="mb-2 flex items-baseline justify-between">
                 <h4 className="m-0 font-[var(--font-montserrat)] text-[0.95rem] font-extrabold">{token.symbol}</h4>
                 <strong className="text-[var(--ink)]">{signalScore(token.signal)}</strong>
@@ -447,7 +456,7 @@ export function DashboardShell({
                 return (
                   <p key={key} className="mb-1.5 grid grid-cols-[100px_1fr] items-center gap-2 text-[0.76rem] text-[var(--muted)]">
                     <span>{key === "holderStrength" ? "Holder Strength" : key === "whalePenalty" ? "Whale Penalty" : key[0].toUpperCase() + key.slice(1)}</span>
-                    <i className="block h-2 w-full overflow-hidden rounded-full bg-[#e9f0ff]">
+                    <i className="block h-2 w-full overflow-hidden rounded-full bg-[#e9f0ff] dark:bg-[#1b2b49]">
                       <b className={cn("block h-full bg-[linear-gradient(90deg,#07beb8,#3a86ff)]", isRisk && "bg-[linear-gradient(90deg,#ff6b35,#ef476f)]")} style={{ width: `${value}%` }} />
                     </i>
                   </p>
@@ -481,16 +490,16 @@ export function DashboardShell({
             </select>
             <input className={controlInputCls} type="number" value={alertForm.value} onChange={(e) => setAlertForm((prev) => ({ ...prev, value: Number(e.target.value) }))} placeholder="threshold" />
             <input className={cn(controlInputCls, "sm:col-span-2")} value={alertForm.webhookUrl} onChange={(e) => setAlertForm((prev) => ({ ...prev, webhookUrl: e.target.value }))} placeholder="https://webhook.url (optional)" />
-            <button className="rounded-[9px] border border-[#1b2c4b] bg-[#1b2c4b] px-2.5 py-[7px] text-[0.8rem] text-white" type="button" onClick={addAlert}>Add Alert</button>
+            <button className="rounded-[9px] border border-[#1b2c4b] bg-[#1b2c4b] px-2.5 py-[7px] text-[0.8rem] text-white dark:border-[#ffd166] dark:bg-[#ffd166] dark:text-[#17233d]" type="button" onClick={addAlert}>Add Alert</button>
           </div>
 
           <div className="mt-2.5 grid gap-2">
             {alerts.map((rule) => (
-              <article key={rule.id} className="flex items-center justify-between gap-2 rounded-[10px] border border-[#d8e4ff] bg-[#f8fbff] p-2">
+              <article key={rule.id} className="flex items-center justify-between gap-2 rounded-[10px] border border-[#d8e4ff] bg-[#f8fbff] p-2 dark:border-[#26375b] dark:bg-[#101a2f]">
                 <p className="m-0 text-[0.8rem]">
                   {data.tokens.find((token) => token.id === rule.tokenId)?.symbol ?? rule.tokenId} {rule.metric} {rule.operator} {rule.metric === "volume" ? formatCompact(rule.value) : rule.value}
                 </p>
-                <button className="cursor-pointer rounded-lg border border-[#d84f68] bg-[#ffe7ec] px-2 py-1 text-xs text-[#b62b48]" type="button" onClick={() => removeAlert(rule.id)}>Remove</button>
+                <button className="cursor-pointer rounded-lg border border-[#d84f68] bg-[#ffe7ec] px-2 py-1 text-xs text-[#b62b48] dark:border-[#c84f67] dark:bg-[#3d1e2a] dark:text-[#ff9bb4]" type="button" onClick={() => removeAlert(rule.id)}>Remove</button>
               </article>
             ))}
           </div>
@@ -506,7 +515,7 @@ export function DashboardShell({
               <p className="text-[0.82rem] text-[var(--muted)]">No triggers yet.</p>
             ) : (
               notifications.map((item) => (
-                <article key={item.id} className="flex items-center justify-between gap-2 rounded-[10px] border border-[#d8e4ff] bg-[#f8fbff] p-2">
+                <article key={item.id} className="flex items-center justify-between gap-2 rounded-[10px] border border-[#d8e4ff] bg-[#f8fbff] p-2 dark:border-[#26375b] dark:bg-[#101a2f]">
                   <p className="m-0 text-[0.8rem]">{item.text}</p>
                   <small className="text-[var(--muted)]">{new Date(item.at).toLocaleTimeString()}</small>
                 </article>
@@ -516,7 +525,7 @@ export function DashboardShell({
         </section>
       </section>
 
-      <footer className="text-[0.8rem] text-[#6d7a95]">
+      <footer className="text-[0.8rem] text-[#6d7a95] dark:text-[var(--muted)]">
         <p>
           Source: CoinGecko public APIs. Alerts are evaluated on each refresh cycle. Use webhook URLs with caution.
         </p>

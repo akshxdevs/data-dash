@@ -18,7 +18,7 @@ export function HeatMatrix({
         <span className="text-[0.77rem] text-[var(--muted)]">Engagement Index</span>
       </header>
       <div className="overflow-hidden rounded-xl border border-[var(--line)]" role="table" aria-label="Geo hype heat map">
-        <div className="grid bg-[#f2f6ff]" role="row" style={gridStyle}>
+        <div className="grid bg-[#f2f6ff] dark:bg-[#16233f]" role="row" style={gridStyle}>
           <span className="border-b border-r border-[var(--line)] px-2 py-2.5" />
           {heatMapCols.map((col) => (
             <strong key={col} className="border-b border-r border-[var(--line)] px-2 py-2.5 text-center text-[0.78rem]">{col}</strong>

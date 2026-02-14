@@ -17,7 +17,7 @@ export function MultiLineChart({ weeklyWars, symbols }: { weeklyWars: WeeklyWar[
         <h2 className="m-0 font-[var(--font-montserrat)] text-[1.12rem] font-extrabold text-[var(--ink)]">Battle Momentum</h2>
         <span className="text-[0.77rem] text-[var(--muted)]">7D Social Dominance</span>
       </header>
-      <svg viewBox="0 0 640 260" className="h-auto w-full rounded-xl bg-[linear-gradient(180deg,#f3f7ff,#f8fbff)]" role="img" aria-label="Momentum line chart">
+      <svg viewBox="0 0 640 260" className="h-auto w-full rounded-xl bg-[linear-gradient(180deg,#f3f7ff,#f8fbff)] dark:bg-[linear-gradient(180deg,#14233e,#101a30)]" role="img" aria-label="Momentum line chart">
         {[0, 1, 2, 3, 4].map((g) => (
           <line
             key={g}
