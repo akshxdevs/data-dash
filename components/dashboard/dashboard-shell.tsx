@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { DonutFlow } from "@/components/dashboard/donut-flow";
 import { AppBar } from "@/components/dashboard/app-bar";
@@ -84,10 +84,10 @@ async function postWebhook(url: string, message: string) {
 }
 
 const panelCls =
-  "rounded-2xl border border-[var(--line)] bg-[var(--panel-bg)] p-[14px] shadow-[0_8px_22px_rgba(17,29,54,.07)] transition hover:-translate-y-[3px] hover:border-[#cadbff] hover:shadow-[0_18px_36px_rgba(20,35,62,.12)]";
+  "rounded-2xl border border-[var(--line)] bg-[var(--panel-bg)] p-[14px] shadow-[0_10px_24px_rgba(2,7,16,.35)] transition hover:-translate-y-[1px] hover:border-[#4b66a3] hover:shadow-[0_16px_32px_rgba(2,7,16,.45)]";
 
 const controlInputCls =
-  "rounded-[9px] border border-[#d4e0fb] bg-white px-2.5 py-[7px] text-[0.8rem] text-[#2b3d61] outline-none focus:border-[#90b2ff] dark:border-[#2a3b5e] dark:bg-[#0c1527] dark:text-[#d9e5ff]";
+  "w-full min-w-0 rounded-[10px] border border-[#31486f] bg-[#0f172a] px-2.5 py-[7px] text-[0.8rem] text-[#dbe6ff] outline-none focus:border-[#6f90d7]";
 
 export function DashboardShell({
   initialData,
@@ -101,7 +101,7 @@ export function DashboardShell({
   const [data, setData] = useState(initialData);
   const [interval, setInterval] = useState<ArenaInterval>(initialData.interval);
   const [watchlistIds, setWatchlistIds] = useState<string[]>(defaultIds);
-  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [theme, setTheme] = useState<"light" | "dark">("dark");
   const [loading, setLoading] = useState(false);
 
   const [presets, setPresets] = useState<Preset[]>([]);
@@ -119,6 +119,30 @@ export function DashboardShell({
 
   const [compareA, setCompareA] = useState(defaultIds[0] ?? "");
   const [compareB, setCompareB] = useState(defaultIds[1] ?? defaultIds[0] ?? "");
+
+  const toggleTheme = useCallback(() => {
+    const nextTheme = theme === "light" ? "dark" : "light";
+    const docWithTransition = document as Document & {
+      startViewTransition?: (callback: () => void) => { finished: Promise<void> };
+    };
+
+    if (!docWithTransition.startViewTransition) {
+      document.documentElement.classList.add("theme-switching");
+      setTheme(nextTheme);
+      window.setTimeout(() => {
+        document.documentElement.classList.remove("theme-switching");
+      }, 420);
+      return;
+    }
+
+    document.documentElement.classList.add("theme-switching");
+    const transition = docWithTransition.startViewTransition(() => {
+      setTheme(nextTheme);
+    });
+    transition.finished.finally(() => {
+      document.documentElement.classList.remove("theme-switching");
+    });
+  }, [theme]);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("arena_theme");
@@ -257,6 +281,7 @@ export function DashboardShell({
   const totalVolume = data.tokens.reduce((acc, token) => acc + token.volume24h, 0);
   const averageSentiment = Math.round(data.tokens.reduce((acc, token) => acc + token.sentiment, 0) / data.tokens.length);
   const positiveCount = data.tokens.filter((token) => (token.priceChange[token.priceChange.length - 1] ?? 0) > 0).length;
+  const year = new Date().getFullYear();
 
   const toggleWatch = (id: string) => {
     setWatchlistIds((prev) => {
@@ -291,45 +316,49 @@ export function DashboardShell({
   };
 
   return (
-    <div className="relative mx-auto flex w-full max-w-[1280px] flex-col gap-3 p-7 max-md:p-3.5 text-[var(--ink)]">
+    <div className="relative mx-auto flex w-full max-w-[1280px] flex-col gap-3 p-7 pt-24 max-md:p-3.5 max-md:pt-20 text-[var(--ink)]">
       <div aria-hidden="true" className="pointer-events-none absolute inset-x-[-20px] top-[-50px] -z-10 h-[340px] overflow-hidden transition-opacity duration-300 dark:opacity-0">
-        <span className="absolute left-[-6%] top-[-4%] h-[190px] w-[520px] rounded-[999px] bg-[linear-gradient(115deg,rgba(255,193,155,.42),rgba(255,193,155,0))] blur-3xl [animation:smokeFloat_20s_ease-in-out_infinite]" />
-        <span className="absolute right-[-4%] top-[2%] h-[210px] w-[540px] rounded-[999px] bg-[linear-gradient(250deg,rgba(150,188,255,.4),rgba(150,188,255,0))] blur-3xl [animation:smokeFloat_24s_ease-in-out_infinite] [animation-delay:2s]" />
-        <span className="absolute left-[16%] top-[18%] h-[180px] w-[470px] rounded-[999px] bg-[linear-gradient(130deg,rgba(162,232,220,.28),rgba(162,232,220,0))] blur-3xl [animation:smokeFloat_22s_ease-in-out_infinite] [animation-delay:4s]" />
-        <span className="absolute right-[18%] top-[30%] h-[150px] w-[360px] rounded-[999px] bg-[linear-gradient(190deg,rgba(255,221,189,.28),rgba(255,221,189,0))] blur-3xl [animation:smokeFloat_26s_ease-in-out_infinite] [animation-delay:6s]" />
+        <span className="absolute left-[-6%] top-[-4%] h-[190px] w-[520px] rounded-[999px] bg-[linear-gradient(115deg,rgba(255,193,155,.42),rgba(255,193,155,0))] opacity-75 blur-3xl [animation:smokeFloat_20s_ease-in-out_infinite]" />
+        <span className="absolute right-[-4%] top-[2%] h-[210px] w-[540px] rounded-[999px] bg-[linear-gradient(250deg,rgba(150,188,255,.4),rgba(150,188,255,0))] opacity-75 blur-3xl [animation:smokeFloat_24s_ease-in-out_infinite] [animation-delay:2s]" />
+        <span className="absolute left-[16%] top-[18%] h-[180px] w-[470px] rounded-[999px] bg-[linear-gradient(130deg,rgba(162,232,220,.28),rgba(162,232,220,0))] opacity-70 blur-3xl [animation:smokeFloat_22s_ease-in-out_infinite] [animation-delay:4s]" />
+        <span className="absolute right-[18%] top-[30%] h-[150px] w-[360px] rounded-[999px] bg-[linear-gradient(190deg,rgba(255,221,189,.28),rgba(255,221,189,0))] opacity-70 blur-3xl [animation:smokeFloat_26s_ease-in-out_infinite] [animation-delay:6s]" />
       </div>
 
-      <AppBar
-        theme={theme}
-        onToggleTheme={() => setTheme(theme === "light" ? "dark" : "light")}
-        source={data.source}
-        lastUpdated={data.lastUpdated}
-        loading={loading}
-      />
+      <div className="fixed left-1/2 top-3 z-50 w-[min(1280px,calc(100%-1rem))] -translate-x-1/2">
+        <AppBar
+          theme={theme}
+          onToggleTheme={toggleTheme}
+          source={data.source}
+          lastUpdated={data.lastUpdated}
+          loading={loading}
+        />
+      </div>
 
-      <section className="grid gap-2.5 xl:grid-cols-[1.2fr_1.8fr]">
-        <div className="flex flex-wrap items-center gap-2 rounded-xl border border-[var(--line)] bg-[var(--surface-2)] p-2.5">
-          {INTERVALS.map((item) => (
-            <button
-              key={item}
-              className={cn(
-                "cursor-pointer rounded-full border px-2.5 py-1.5 text-[0.75rem]",
-                item === interval
-                  ? "border-[#0e1728] bg-[#0e1728] text-white dark:border-[#ffd166] dark:bg-[#ffd166] dark:text-[#17233d]"
-                  : "border-[#d4e0fb] bg-[#f5f9ff] text-[#35496f] dark:border-[#2d4066] dark:bg-[#13213a] dark:text-[#c9d7f5]",
-              )}
-              onClick={() => setInterval(item)}
-              type="button"
-            >
-              {item.toUpperCase()}
-            </button>
-          ))}
-          <span className="text-[0.77rem] text-[var(--muted)]">{loading ? "Refreshing..." : "Live sync"}</span>
+      <section className="grid gap-2.5 xl:grid-cols-[1.2fr_1.8fr] motion-safe:[animation:fadeUp_.6s_ease-out_.08s_both]">
+        <div className="grid gap-2 rounded-xl border border-[var(--line)] bg-[var(--surface-2)] p-2.5 sm:flex sm:flex-wrap sm:items-center">
+          <div className="flex flex-wrap items-center gap-2">
+            {INTERVALS.map((item) => (
+              <button
+                key={item}
+                className={cn(
+                  "cursor-pointer rounded-full border px-2.5 py-1.5 text-[0.75rem]",
+                  item === interval
+                    ? "border-[#0e1728] bg-[#0e1728] text-white dark:border-[#ffd166] dark:bg-[#ffd166] dark:text-[#17233d]"
+                    : "border-[#31486f] bg-[#101a2d] text-[#a9bee8]",
+                )}
+                onClick={() => setInterval(item)}
+                type="button"
+              >
+                {item.toUpperCase()}
+              </button>
+            ))}
+          </div>
+          <span className="text-[0.77rem] text-[var(--muted)] sm:ml-auto">{loading ? "Refreshing..." : "Live sync"}</span>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2 rounded-xl border border-[var(--line)] bg-[var(--surface-2)] p-2.5">
+        <div className="grid gap-2 rounded-xl border border-[var(--line)] bg-[var(--surface-2)] p-2.5 sm:grid-cols-[minmax(0,1fr)_auto_minmax(140px,220px)] sm:items-center">
           <input className={controlInputCls} value={presetName} onChange={(e) => setPresetName(e.target.value)} placeholder="Preset name" />
-          <button className="rounded-[9px] border border-[#1b2c4b] bg-[#1b2c4b] px-2.5 py-[7px] text-[0.8rem] text-white dark:border-[#ffd166] dark:bg-[#ffd166] dark:text-[#17233d]" onClick={savePreset} type="button">Save Preset</button>
+          <button className="rounded-[9px] border border-[#31528c] bg-[#142548] px-2.5 py-[7px] text-[0.8rem] text-[#e7efff] whitespace-nowrap hover:bg-[#1b325f]" onClick={savePreset} type="button">Save Preset</button>
           <select
             className={controlInputCls}
             defaultValue=""
@@ -346,19 +375,18 @@ export function DashboardShell({
         </div>
       </section>
 
-      <section className={cn(panelCls, "dark:border-[#31466f] dark:bg-[linear-gradient(170deg,rgba(18,30,53,.96),rgba(14,24,43,.96))]")}>
-        <header className="mb-2 flex items-baseline justify-between gap-2.5 border-b border-[var(--line)] pb-2 dark:border-[#2c3f65]">
-          <h2 className="m-0 font-[var(--font-montserrat)] text-[1.12rem] font-extrabold text-[var(--ink)] dark:text-[#e6efff]">Watchlist Builder</h2>
-          <span className="text-[0.77rem] text-[var(--muted)] dark:text-[#afc2e8]">Pick at least 3</span>
+      <section className={cn(panelCls, "motion-safe:[animation:fadeUp_.6s_ease-out_.14s_both]")}>
+        <header className="mb-2 flex items-baseline justify-between gap-2.5 border-b border-[var(--line)] pb-2">
+          <h2 className="m-0 font-[var(--font-montserrat)] text-[1.12rem] font-extrabold text-[var(--ink)]">Watchlist Builder</h2>
+          <span className="text-[0.77rem] text-[var(--muted)]">Pick at least 3</span>
         </header>
         <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
           {availableCoins.map((coin) => {
             const checked = watchlistIds.includes(coin.id);
             return (
             <label key={coin.id} className={cn(
-              "grid grid-cols-[auto_1fr] items-center gap-x-2 gap-y-0.5 rounded-[10px] border border-[#d8e4ff] bg-[#f8fbff] p-2 transition",
-              "dark:border-[#2a3d63] dark:bg-[#101a2f] dark:hover:border-[#3b5688]",
-              checked && "border-[#8eb4ff] bg-[#eef5ff] dark:border-[#5d83c7] dark:bg-[#162441]",
+              "grid grid-cols-[auto_1fr] items-center gap-x-2 gap-y-0.5 rounded-[10px] border border-[#2d4066] bg-[#101a2f] p-2 transition hover:border-[#3d5b90]",
+              checked && "border-[#5d83c7] bg-[#162441]",
             )}>
               <input
                 className="row-span-2 accent-[#3a86ff]"
@@ -366,8 +394,8 @@ export function DashboardShell({
                 checked={watchlistIds.includes(coin.id)}
                 onChange={() => toggleWatch(coin.id)}
               />
-              <span className="text-[0.82rem] font-bold text-[var(--ink)] dark:text-[#e3edff]">{coin.symbol}</span>
-              <small className="text-[0.73rem] text-[var(--muted)] dark:text-[#9eb3da]">{coin.name}</small>
+              <span className="text-[0.82rem] font-bold text-[var(--ink)]">{coin.symbol}</span>
+              <small className="text-[0.73rem] text-[var(--muted)]">{coin.name}</small>
             </label>
           )})}
         </div>
@@ -383,15 +411,19 @@ export function DashboardShell({
         tokens={data.tokens}
       />
 
-      <TickerStrip tokens={data.tokens} />
+      <div className="motion-safe:[animation:fadeUp_.58s_ease-out_.24s_both]">
+        <TickerStrip tokens={data.tokens} />
+      </div>
 
       <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        {data.tokens.slice(0, 4).map((token) => (
-          <TopSparkCard key={token.symbol} token={token} />
+        {data.tokens.slice(0, 4).map((token, idx) => (
+          <div key={token.symbol} className="motion-safe:[animation:fadeUp_.56s_ease-out_both]" style={{ animationDelay: `${0.28 + idx * 0.06}s` }}>
+            <TopSparkCard token={token} />
+          </div>
         ))}
       </section>
 
-      <main className="grid items-stretch gap-3 lg:grid-cols-2 xl:grid-cols-3">
+      <main className="grid items-stretch gap-3 lg:grid-cols-2 xl:grid-cols-3 motion-safe:[animation:fadeUp_.62s_ease-out_.38s_both]">
         <MultiLineChart weeklyWars={data.weeklyWars} symbols={data.tokens.slice(0, 3).map((token) => token.symbol)} />
         <VolumeBars tokens={data.tokens} />
         <DonutFlow walletFlows={data.walletFlows} />
@@ -399,12 +431,12 @@ export function DashboardShell({
         <LeaderboardTable tokens={data.tokens} />
       </main>
 
-      <section className={cn(panelCls, "flex flex-col gap-3")}> 
+      <section className={cn(panelCls, "flex flex-col gap-3 motion-safe:[animation:fadeUp_.62s_ease-out_.46s_both]")}>
         <header className="flex items-baseline justify-between gap-2.5">
           <h2 className="m-0 font-[var(--font-montserrat)] text-[1.12rem] font-extrabold">Compare Mode</h2>
           <span className="text-[0.77rem] text-[var(--muted)]">Correlation + Relative Strength</span>
         </header>
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="grid gap-2 sm:grid-cols-[minmax(0,180px)_minmax(0,180px)_1fr] sm:items-center">
           <select className={controlInputCls} value={compareA} onChange={(e) => setCompareA(e.target.value)}>
             {data.tokens.map((token) => (
               <option key={token.id} value={token.id}>{token.symbol}</option>
@@ -415,10 +447,10 @@ export function DashboardShell({
               <option key={token.id} value={token.id}>{token.symbol}</option>
             ))}
           </select>
-          <p className="m-0 text-[0.82rem] text-[var(--muted)]">Correlation <strong className="text-[var(--ink)]">{compareCorrelation.toFixed(2)}</strong></p>
+          <p className="m-0 text-[0.82rem] text-[var(--muted)] sm:justify-self-end">Correlation <strong className="text-[var(--ink)]">{compareCorrelation.toFixed(2)}</strong></p>
         </div>
         <div className="grid gap-2.5 xl:grid-cols-[1.4fr_1fr]">
-          <article className="rounded-xl border border-[#dbe6ff] bg-[#f8fbff] p-2.5 dark:border-[#26375b] dark:bg-[#101a2f]">
+          <article className="rounded-xl border border-[#2d4066] bg-[#101a2f] p-2.5">
             <h4 className="m-0 font-[var(--font-montserrat)] text-[0.95rem] font-extrabold">{compareTokenA?.symbol} vs {compareTokenB?.symbol}</h4>
             <svg viewBox="0 0 220 70" className="mt-2 h-[72px] w-full" aria-hidden="true">
               <path d={linePath(relativeDiff, 220, 70, 8)} fill="none" stroke="#ff6b35" strokeWidth="3" />
@@ -427,7 +459,7 @@ export function DashboardShell({
               Relative edge: <strong className={cn((relativeDiff[relativeDiff.length - 1] ?? 0) >= 0 ? "text-[#0f9f84]" : "text-[#ce355c]")}>{formatSignedPct(relativeDiff[relativeDiff.length - 1] ?? 0)}</strong>
             </p>
           </article>
-          <article className="rounded-xl border border-[#dbe6ff] bg-[#f8fbff] p-2.5 dark:border-[#26375b] dark:bg-[#101a2f]">
+          <article className="rounded-xl border border-[#2d4066] bg-[#101a2f] p-2.5">
             <h4 className="m-0 font-[var(--font-montserrat)] text-[0.95rem] font-extrabold">Quick Stats</h4>
             <p className="mt-2 text-[0.82rem] text-[var(--muted)]">{compareTokenA?.symbol}: {formatCurrency(compareTokenA?.marketCap ?? 0)}</p>
             <p className="mt-2 text-[0.82rem] text-[var(--muted)]">{compareTokenB?.symbol}: {formatCurrency(compareTokenB?.marketCap ?? 0)}</p>
@@ -436,14 +468,14 @@ export function DashboardShell({
         </div>
       </section>
 
-      <section className={cn(panelCls, "flex flex-col gap-3")}> 
+      <section className={cn(panelCls, "flex flex-col gap-3 motion-safe:[animation:fadeUp_.62s_ease-out_.54s_both]")}>
         <header className="flex items-baseline justify-between gap-2.5">
           <h2 className="m-0 font-[var(--font-montserrat)] text-[1.12rem] font-extrabold">Explainable Alpha</h2>
           <span className="text-[0.77rem] text-[var(--muted)]">Signal decomposition per token</span>
         </header>
         <div className="grid gap-2.5 md:grid-cols-2 xl:grid-cols-3">
           {data.tokens.map((token) => (
-            <article key={token.id} className="rounded-xl border border-[#dbe6ff] bg-[#f9fbff] p-2.5 dark:border-[#26375b] dark:bg-[#101a2f]">
+            <article key={token.id} className="rounded-xl border border-[#2d4066] bg-[#101a2f] p-2.5">
               <div className="mb-2 flex items-baseline justify-between">
                 <h4 className="m-0 font-[var(--font-montserrat)] text-[0.95rem] font-extrabold">{token.symbol}</h4>
                 <strong className="text-[var(--ink)]">{signalScore(token.signal)}</strong>
@@ -454,7 +486,7 @@ export function DashboardShell({
                 return (
                   <p key={key} className="mb-1.5 grid grid-cols-[100px_1fr] items-center gap-2 text-[0.76rem] text-[var(--muted)]">
                     <span>{key === "holderStrength" ? "Holder Strength" : key === "whalePenalty" ? "Whale Penalty" : key[0].toUpperCase() + key.slice(1)}</span>
-                    <i className="block h-2 w-full overflow-hidden rounded-full bg-[#e9f0ff] dark:bg-[#1b2b49]">
+                    <i className="block h-2 w-full overflow-hidden rounded-full bg-[#1b2b49]">
                       <b className={cn("block h-full bg-[linear-gradient(90deg,#07beb8,#3a86ff)]", isRisk && "bg-[linear-gradient(90deg,#ff6b35,#ef476f)]")} style={{ width: `${value}%` }} />
                     </i>
                   </p>
@@ -465,13 +497,13 @@ export function DashboardShell({
         </div>
       </section>
 
-      <section className="grid items-stretch gap-3 xl:grid-cols-[1.35fr_1fr]">
+      <section className="grid items-stretch gap-3 xl:grid-cols-[1.35fr_1fr] motion-safe:[animation:fadeUp_.62s_ease-out_.62s_both]">
         <section className={panelCls}>
           <header className="mb-2 flex items-baseline justify-between gap-2.5">
             <h2 className="m-0 font-[var(--font-montserrat)] text-[1.12rem] font-extrabold">Alert Rules</h2>
             <span className="text-[0.77rem] text-[var(--muted)]">Threshold + optional webhook</span>
           </header>
-          <div className="grid gap-2 sm:grid-cols-3">
+          <div className="grid gap-2 md:grid-cols-4">
             <select className={controlInputCls} value={alertForm.tokenId} onChange={(e) => setAlertForm((prev) => ({ ...prev, tokenId: e.target.value }))}>
               {data.tokens.map((token) => (
                 <option key={token.id} value={token.id}>{token.symbol}</option>
@@ -487,17 +519,17 @@ export function DashboardShell({
               <option value="<">{"<"}</option>
             </select>
             <input className={controlInputCls} type="number" value={alertForm.value} onChange={(e) => setAlertForm((prev) => ({ ...prev, value: Number(e.target.value) }))} placeholder="threshold" />
-            <input className={cn(controlInputCls, "sm:col-span-2")} value={alertForm.webhookUrl} onChange={(e) => setAlertForm((prev) => ({ ...prev, webhookUrl: e.target.value }))} placeholder="https://webhook.url (optional)" />
-            <button className="rounded-[9px] border border-[#1b2c4b] bg-[#1b2c4b] px-2.5 py-[7px] text-[0.8rem] text-white dark:border-[#ffd166] dark:bg-[#ffd166] dark:text-[#17233d]" type="button" onClick={addAlert}>Add Alert</button>
+            <input className={cn(controlInputCls, "md:col-span-3")} value={alertForm.webhookUrl} onChange={(e) => setAlertForm((prev) => ({ ...prev, webhookUrl: e.target.value }))} placeholder="https://webhook.url (optional)" />
+            <button className="rounded-[9px] border border-[#31528c] bg-[#142548] px-2.5 py-[7px] text-[0.8rem] text-[#e7efff] whitespace-nowrap hover:bg-[#1b325f]" type="button" onClick={addAlert}>Add Alert</button>
           </div>
 
           <div className="mt-2.5 grid gap-2">
             {alerts.map((rule) => (
-              <article key={rule.id} className="flex items-center justify-between gap-2 rounded-[10px] border border-[#d8e4ff] bg-[#f8fbff] p-2 dark:border-[#26375b] dark:bg-[#101a2f]">
+              <article key={rule.id} className="flex items-center justify-between gap-2 rounded-[10px] border border-[#2d4066] bg-[#101a2f] p-2">
                 <p className="m-0 text-[0.8rem]">
                   {data.tokens.find((token) => token.id === rule.tokenId)?.symbol ?? rule.tokenId} {rule.metric} {rule.operator} {rule.metric === "volume" ? formatCompact(rule.value) : rule.value}
                 </p>
-                <button className="cursor-pointer rounded-lg border border-[#d84f68] bg-[#ffe7ec] px-2 py-1 text-xs text-[#b62b48] dark:border-[#c84f67] dark:bg-[#3d1e2a] dark:text-[#ff9bb4]" type="button" onClick={() => removeAlert(rule.id)}>Remove</button>
+                <button className="cursor-pointer rounded-lg border border-[#c84f67] bg-[#3d1e2a] px-2 py-1 text-xs text-[#ff9bb4]" type="button" onClick={() => removeAlert(rule.id)}>Remove</button>
               </article>
             ))}
           </div>
@@ -513,7 +545,7 @@ export function DashboardShell({
               <p className="text-[0.82rem] text-[var(--muted)]">No triggers yet.</p>
             ) : (
               notifications.map((item) => (
-                <article key={item.id} className="flex items-center justify-between gap-2 rounded-[10px] border border-[#d8e4ff] bg-[#f8fbff] p-2 dark:border-[#26375b] dark:bg-[#101a2f]">
+                <article key={item.id} className="flex items-center justify-between gap-2 rounded-[10px] border border-[#2d4066] bg-[#101a2f] p-2">
                   <p className="m-0 text-[0.8rem]">{item.text}</p>
                   <small className="text-[var(--muted)]">{new Date(item.at).toLocaleTimeString()}</small>
                 </article>
@@ -523,10 +555,22 @@ export function DashboardShell({
         </section>
       </section>
 
-      <footer className="text-[0.8rem] text-[#6d7a95] dark:text-[var(--muted)]">
-        <p>
-          Source: CoinGecko public APIs. Alerts are evaluated on each refresh cycle. Use webhook URLs with caution.
-        </p>
+      <footer className="relative -mx-7 mt-1 px-7 py-3 max-md:-mx-3.5 max-md:px-3.5 motion-safe:[animation:fadeUp_.62s_ease-out_.72s_both]">
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute left-0 top-0 h-px w-full bg-[linear-gradient(90deg,transparent,rgba(58,134,255,.6),rgba(255,107,53,.55),transparent)]"
+        />
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <p className="m-0 inline-flex items-center gap-2 text-xs tracking-[0.04em] text-slate-700 dark:text-[#c4d7fb]">
+            <span className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-[#b7c9ed] dark:border-[#355184]">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#ff6b35] motion-safe:[animation:blink_1.8s_ease-in-out_infinite]" />
+            </span>
+            Crafted by <span className="font-black text-[#1c3a5f] dark:text-[#ffd166]">akshxdevs</span>
+          </p>
+          <p className="m-0 text-[0.68rem] uppercase tracking-[0.12em] text-slate-600 dark:text-[#8fa8d6]">
+            © {year} All Rights Reserved
+          </p>
+        </div>
       </footer>
     </div>
   );

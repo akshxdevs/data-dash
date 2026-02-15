@@ -15,20 +15,20 @@ export function AppBar({
   loading: boolean;
 }) {
   return (
-    <header className="relative grid items-center gap-3 rounded-2xl border border-[var(--line)] bg-[linear-gradient(120deg,rgba(255,255,255,.93),rgba(243,248,255,.88))] px-3 py-2 shadow-[0_14px_34px_rgba(17,29,54,.12)] backdrop-blur-md max-sm:grid-cols-1 sm:grid-cols-[auto_1fr_auto] dark:bg-[linear-gradient(120deg,rgba(15,26,46,.92),rgba(13,22,38,.9))]">
+    <header className="relative grid items-center gap-3 rounded-2xl border border-[var(--line)] bg-[linear-gradient(120deg,rgba(15,25,44,.95),rgba(12,20,36,.94))] px-3 py-2 shadow-[0_14px_30px_rgba(2,6,16,.4)] backdrop-blur-md max-sm:grid-cols-1 sm:grid-cols-[auto_1fr_auto] motion-safe:[animation:fadeUp_.55s_ease-out_both]">
       <div className="flex min-w-0 items-center gap-2.5">
         <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-[linear-gradient(135deg,#ffb703,#ff6b35)] text-xs font-black text-slate-900 shadow-[0_8px_18px_rgba(255,107,53,.35)]">
           DD
         </span>
         <div className="min-w-0">
-          <p className="m-0 truncate font-[var(--font-montserrat)] text-[0.95rem] font-black leading-tight text-[var(--ink)] dark:text-[#e6efff]">Data Dash Arena</p>
-          <small className="m-0 hidden truncate text-[0.7rem] text-[var(--muted)] dark:text-[#afc2e8] sm:block">Intelligence Console</small>
+          <p className="m-0 truncate font-[var(--font-montserrat)] text-[0.95rem] font-black leading-tight text-[var(--ink)]">Data Dash Arena</p>
+          <small className="m-0 hidden truncate text-[0.7rem] text-[var(--muted)] sm:block">Intelligence Console</small>
         </div>
       </div>
 
       <nav
         aria-label="Dashboard quick tabs"
-        className="no-scrollbar justify-self-stretch overflow-x-auto whitespace-nowrap rounded-full border border-[#dce7ff] bg-[#f6faff] p-1 max-sm:w-full dark:border-[#2a3c63] dark:bg-[#101b31]"
+        className="no-scrollbar justify-self-stretch overflow-x-auto whitespace-nowrap rounded-full border border-[#2a3c63] bg-[#101b31] p-1 max-sm:w-full"
       >
         <div className="flex items-center gap-1">
           {[
@@ -40,10 +40,10 @@ export function AppBar({
             <span
               key={label}
               className={cn(
-                "rounded-full px-2.5 py-1 text-[0.7rem]",
+                "rounded-full px-2.5 py-1 text-[0.7rem] transition-colors",
                 active
-                  ? "bg-[#162845] text-white dark:bg-[#ffd166] dark:text-[#17233d]"
-                  : "text-[#526384] dark:text-[#9fb4dc]",
+                  ? "bg-[#ffd166] text-[#17233d]"
+                  : "text-[#9fb4dc]",
               )}
             >
               {label}
@@ -57,7 +57,7 @@ export function AppBar({
           title={source === "live" ? "Live data source" : "Fallback data source"}
           className={cn(
             "m-0 inline-flex items-center gap-1 rounded-full px-2 py-1 text-[0.72rem] font-bold",
-            source === "live" ? "bg-[#d2f9f0] text-[#045b55]" : "bg-[#ffe9c9] text-[#8b5d00]",
+            source === "live" ? "bg-[#113834] text-[#86f6de]" : "bg-[#3f3316] text-[#ffd899]",
           )}
         >
           <i
@@ -71,15 +71,15 @@ export function AppBar({
 
         <small className="hidden text-[0.7rem] text-[var(--muted)] md:block">{formatLocalTime(lastUpdated)}</small>
 
-        <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-[#d6e5ff] bg-[#eaf2ff] dark:border-[#2d4066] dark:bg-[#162540]">
-          <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 fill-[#355587] dark:fill-[#ffd166]" role="img">
+        <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-[#2d4066] bg-[#162540]">
+          <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 fill-[#ffd166]" role="img">
             <path d="M12 3l2.8 5.7L21 9.6l-4.5 4.4 1.1 6.2L12 17.2 6.4 20.2 7.5 14 3 9.6l6.2-.9z" />
           </svg>
         </span>
 
         <button
           type="button"
-          className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#1a2b48] bg-[#1a2b48] text-white transition hover:brightness-110 dark:border-[#ffd166] dark:bg-[#ffd166] dark:text-[#17233d]"
+          className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#ffd166] bg-[#ffd166] text-[#17233d] transition hover:brightness-110"
           onClick={onToggleTheme}
           aria-label={theme === "light" ? "Switch to dark theme" : "Switch to light theme"}
           title={theme === "light" ? "Dark mode" : "Light mode"}

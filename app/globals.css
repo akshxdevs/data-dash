@@ -2,29 +2,29 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --ink: #0e1728;
-  --muted: #51607e;
-  --surface: #f7f9ff;
-  --surface-2: #ffffff;
-  --line: #dbe3f5;
+  --ink: #e8eeff;
+  --muted: #9fb0d9;
+  --surface: #070b14;
+  --surface-2: #121a2b;
+  --line: #2b3a5e;
   --accent: #ff6b35;
   --accent-2: #07beb8;
   --accent-3: #3a86ff;
   --warning: #ffb703;
   --danger: #ef476f;
-  --page-grad-a: #f4f8ff;
-  --page-grad-b: #eef3ff;
-  --page-grad-c: #f8fbff;
-  --ticker-bg: rgba(255, 255, 255, 0.72);
-  --panel-bg: linear-gradient(170deg, rgba(255, 255, 255, 0.92), rgba(244, 248, 255, 0.88));
+  --page-grad-a: #05070f;
+  --page-grad-b: #090f1c;
+  --page-grad-c: #070c17;
+  --ticker-bg: rgba(12, 20, 36, 0.88);
+  --panel-bg: linear-gradient(165deg, rgba(17, 24, 41, 0.94), rgba(12, 19, 34, 0.94));
 }
 
 [data-theme="dark"] {
-  --ink: #d9e5ff;
-  --muted: #9fb1d6;
-  --surface: #0f1729;
-  --surface-2: #111b2f;
-  --line: #243251;
+  --ink: #edf2ff;
+  --muted: #a8b8dd;
+  --surface: #04060d;
+  --surface-2: #0f1627;
+  --line: #26365a;
   --page-grad-a: #08101e;
   --page-grad-b: #0b1326;
   --page-grad-c: #091223;
@@ -42,8 +42,9 @@ body {
   color: var(--ink);
   font-family: var(--font-inter), "Inter", "Segoe UI", sans-serif;
   background:
-    radial-gradient(circle at 12% 15%, #ffe5d8 0, transparent 42%),
-    radial-gradient(circle at 88% 10%, #d7fff4 0, transparent 35%),
+    radial-gradient(circle at 14% 12%, rgba(95, 72, 201, 0.2) 0, transparent 40%),
+    radial-gradient(circle at 88% 10%, rgba(255, 120, 71, 0.17) 0, transparent 36%),
+    radial-gradient(circle at 60% 100%, rgba(58, 134, 255, 0.12) 0, transparent 45%),
     linear-gradient(180deg, var(--page-grad-a) 0%, var(--page-grad-b) 40%, var(--page-grad-c) 100%);
   min-height: 100vh;
   overflow-x: hidden;
@@ -58,12 +59,13 @@ body {
   z-index: -1;
   background:
     radial-gradient(120% 72% at 8% 14%, rgba(255, 208, 182, 0.54) 0%, rgba(255, 208, 182, 0) 64%),
-    radial-gradient(96% 66% at 88% 12%, rgba(172, 198, 255, 0.46) 0%, rgba(172, 198, 255, 0) 62%),
-    radial-gradient(84% 58% at 50% 80%, rgba(170, 236, 228, 0.34) 0%, rgba(170, 236, 228, 0) 66%),
-    linear-gradient(145deg, rgba(255, 255, 255, 0.68), rgba(242, 248, 255, 0.24));
-  filter: blur(54px) saturate(115%);
-  opacity: 0.92;
+    radial-gradient(96% 66% at 88% 12%, rgba(172, 198, 255, 0.26) 0%, rgba(172, 198, 255, 0) 62%),
+    radial-gradient(84% 58% at 50% 80%, rgba(132, 192, 255, 0.2) 0%, rgba(132, 192, 255, 0) 66%),
+    linear-gradient(145deg, rgba(64, 88, 160, 0.22), rgba(18, 24, 42, 0.1));
+  filter: blur(60px) saturate(110%);
+  opacity: 0.62;
   animation: smokeFloat 32s ease-in-out infinite;
+  transition: opacity 0.45s ease, filter 0.45s ease;
 }
 
 [data-theme="light"] body::after {
@@ -85,14 +87,65 @@ body {
   opacity: 0.75;
   transform: translate3d(0, 0, 0);
   animation: fogDrift 38s ease-in-out infinite alternate;
+  transition: opacity 0.45s ease, filter 0.45s ease;
 }
 
 [data-theme="dark"] body::before {
-  content: none;
+  content: "";
+  opacity: 0;
 }
 
 [data-theme="dark"] body::after {
-  content: none;
+  content: "";
+  opacity: 0;
+}
+
+.theme-switching :where(
+  body,
+  header,
+  main,
+  section,
+  article,
+  nav,
+  footer,
+  table,
+  th,
+  td,
+  button,
+  input,
+  select,
+  textarea,
+  p,
+  span,
+  small,
+  strong,
+  em,
+  i,
+  svg,
+  path
+) {
+  transition:
+    background-color 0.36s ease,
+    border-color 0.36s ease,
+    color 0.36s ease,
+    box-shadow 0.36s ease,
+    fill 0.36s ease,
+    stroke 0.36s ease,
+    opacity 0.36s ease;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.46s;
+  animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+::view-transition-old(root) {
+  animation-name: themeCrossfadeOut;
+}
+
+::view-transition-new(root) {
+  animation-name: themeCrossfadeIn;
 }
 
 h1,
@@ -104,6 +157,11 @@ h6 {
   font-family: var(--font-montserrat), "Montserrat", "Segoe UI", sans-serif;
   font-weight: 800;
   letter-spacing: 0.01em;
+}
+
+:where(button, [role="button"], a, input, select, textarea):focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent-3) 78%, white 22%);
+  outline-offset: 2px;
 }
 
 .no-scrollbar {
@@ -180,7 +238,55 @@ h6 {
   }
 }
 
+@keyframes themeCrossfadeOut {
+  from {
+    opacity: 1;
+    filter: blur(0);
+  }
+  to {
+    opacity: 0;
+    filter: blur(3px);
+  }
+}
+
+@keyframes themeCrossfadeIn {
+  from {
+    opacity: 0;
+    filter: blur(3px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0) scale(0.995);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes heroBreath {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -2px, 0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+
   *,
   *::before,
   *::after {

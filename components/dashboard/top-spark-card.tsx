@@ -7,11 +7,11 @@ export function TopSparkCard({ token }: { token: ArenaToken }) {
   const latestMove = token.priceChange[token.priceChange.length - 1] ?? 0;
 
   return (
-    <article className="grid gap-1.5 rounded-2xl border border-[var(--line)] bg-[var(--surface-2)] p-3 transition duration-300 hover:-translate-y-1 hover:border-[#c8d8ff] hover:shadow-[0_14px_28px_rgba(27,45,77,.14)]">
+    <article className="grid gap-1.5 rounded-2xl border border-[var(--line)] bg-[var(--surface-2)] p-3 transition duration-300 hover:-translate-y-1 hover:border-[#4b66a3] hover:shadow-[0_16px_30px_rgba(2,7,16,.38)]">
       <div>
         <p className="m-0 text-xs tracking-[0.08em] text-[var(--muted)]">{token.symbol}</p>
         <h3 className="mt-0.5 font-[var(--font-montserrat)] text-xl font-extrabold text-[var(--ink)]">{token.sentiment}/100</h3>
-        <p className={cn("m-0 text-[0.78rem] font-bold", latestMove >= 0 ? "text-[#0f9f84]" : "text-[#ce355c]")}>{formatSignedPct(latestMove)} 7D</p>
+        <p className={cn("m-0 text-[0.78rem] font-bold", latestMove >= 0 ? "text-[#b9ffc6]" : "text-[#ff9f9f]")}>{formatSignedPct(latestMove)} 7D</p>
       </div>
       <svg viewBox="0 0 210 74" className="h-[74px] w-full" aria-hidden="true">
         <defs>
