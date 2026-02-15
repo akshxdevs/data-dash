@@ -277,13 +277,13 @@ export function DashboardShell({
 
       <section className="mx-auto w-full md:w-1/2 motion-safe:[animation:fadeUp_.6s_ease-out_.08s_both]">
         <div className="rounded-2xl border border-[color-mix(in_srgb,var(--line)_86%,#9fb8e0_14%)] bg-[color-mix(in_srgb,var(--surface-2)_92%,white_8%)] p-2.5 shadow-[0_8px_24px_rgba(17,35,74,.08)] dark:border-[#2f466f] dark:bg-[color-mix(in_srgb,var(--surface-2)_92%,#0f1c34_8%)] dark:shadow-[0_10px_24px_rgba(2,8,20,.34)]">
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <div className="inline-flex w-full items-center gap-1 rounded-xl border border-[#d8e4f8] bg-[color-mix(in_srgb,white_92%,#eef4ff_8%)] p-1 sm:w-auto dark:border-[#354e79] dark:bg-[#0f1a30]">
+          <div className="flex items-center justify-between gap-2">
+            <div className="inline-flex min-w-0 flex-1 items-center gap-1 overflow-x-auto rounded-xl border border-[#d8e4f8] bg-[color-mix(in_srgb,white_92%,#eef4ff_8%)] p-1 no-scrollbar dark:border-[#354e79] dark:bg-[#0f1a30]">
               {INTERVALS.map((item) => (
                 <button
                   key={item}
                   className={cn(
-                    "cursor-pointer rounded-[9px] px-3 py-1.5 text-[0.72rem] font-semibold uppercase tracking-[0.06em] transition-colors",
+                    "shrink-0 cursor-pointer rounded-[9px] px-3 py-1.5 text-[0.72rem] font-semibold uppercase tracking-[0.06em] transition-colors",
                     item === interval
                       ? "border border-[#bfd2f5] bg-[#eaf2ff] text-[#294b82] dark:border-[#4d6da1] dark:bg-[#1b2f52] dark:text-[#d4e2fb]"
                       : "border border-transparent text-[#5d7398] hover:bg-[#f3f7ff] hover:text-[#3a557f] dark:text-[#a0b4d8] dark:hover:bg-[#152541] dark:hover:text-[#d8e5ff]",
@@ -295,7 +295,7 @@ export function DashboardShell({
                 </button>
               ))}
             </div>
-            <span className="inline-flex items-center gap-2 self-start rounded-full border border-[#d4e0f3] bg-[#f7faff] px-3 py-1.5 text-[0.69rem] font-medium uppercase tracking-[0.08em] text-[#4f678f] sm:self-auto dark:border-[#415c8a] dark:bg-[#11213c] dark:text-[#bad0f2]">
+            <span className="inline-flex shrink-0 items-center gap-2 rounded-full border border-[#d4e0f3] bg-[#f7faff] px-2.5 py-1.5 text-[0.62rem] font-medium uppercase tracking-[0.08em] text-[#4f678f] sm:px-3 sm:text-[0.69rem] dark:border-[#415c8a] dark:bg-[#11213c] dark:text-[#bad0f2]">
               <i
                 aria-hidden="true"
                 className={cn(
@@ -319,45 +319,44 @@ export function DashboardShell({
       >
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute right-[-40px] top-[-30px] h-28 w-40 rounded-full bg-[radial-gradient(circle,rgba(58,134,255,.24),transparent_72%)] blur-xl"
+          className="pointer-events-none absolute right-[-42px] top-[-36px] h-36 w-48 rounded-full bg-[radial-gradient(circle,rgba(58,134,255,.2),transparent_72%)] blur-2xl"
         />
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute left-[-48px] bottom-[-40px] h-32 w-44 rounded-full bg-[radial-gradient(circle,rgba(255,107,53,.15),transparent_72%)] blur-xl"
+          className="pointer-events-none absolute left-[-54px] bottom-[-48px] h-36 w-48 rounded-full bg-[radial-gradient(circle,rgba(7,190,184,.18),transparent_72%)] blur-2xl"
         />
-        <header className="mb-2.5 flex flex-wrap items-start justify-between gap-2.5 border-b border-[var(--line)] pb-2">
-          <div className="min-w-0 flex-1">
-            <h2 className="m-0 text-[1.04rem] font-[var(--font-montserrat)] font-extrabold tracking-[0.01em] text-[var(--ink)]">
-              Watchlist Builder
-            </h2>
-            <p className="m-0 mt-1 max-w-[32ch] text-[0.75rem] leading-[1.35] tracking-[0.015em] text-[var(--muted)]">
-              Curate your signal basket from the token matrix.
-            </p>
-          </div>
-          <div className="inline-flex items-center gap-1.5 rounded-full border border-[color-mix(in_srgb,var(--line)_80%,#8ab3ff_20%)] bg-[color-mix(in_srgb,var(--surface-2)_72%,#dceaff_28%)] px-2.5 py-1 text-[0.68rem] font-semibold tracking-[0.07em] text-[color-mix(in_srgb,var(--ink)_80%,#3d5f99_20%)] dark:bg-[color-mix(in_srgb,var(--surface-2)_76%,#1b3056_24%)] dark:text-[color-mix(in_srgb,var(--ink)_88%,#b8d0ff_12%)]">
-            <span>
-              {watchlistIds.length}/{availableCoins.length} Selected
+        <div className="relative mb-3 overflow-hidden rounded-2xl border border-[color-mix(in_srgb,var(--line)_82%,#98b8ec_18%)] bg-[linear-gradient(135deg,color-mix(in_srgb,var(--surface-2)_82%,#f4f8ff_18%),color-mix(in_srgb,var(--surface-2)_78%,#e8f0ff_22%))] p-3 dark:border-[#36517f] dark:bg-[linear-gradient(140deg,#0f1b32,#122344)]">
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute right-[-28px] top-[-24px] h-24 w-32 rounded-full bg-[radial-gradient(circle,rgba(58,134,255,.28),transparent_72%)] blur-xl"
+          />
+          <header className="relative flex flex-wrap items-start justify-between gap-2.5">
+            <div className="min-w-0 flex-1">
+              <h2 className="m-0 text-[1.08rem] font-[var(--font-montserrat)] font-extrabold tracking-[0.012em] text-[var(--ink)]">
+                Watchlist Builder
+              </h2>
+              <p className="m-0 mt-1 max-w-[36ch] text-[0.75rem] leading-[1.35] tracking-[0.02em] text-[color-mix(in_srgb,var(--muted)_86%,#5f7eb0_14%)]">
+                Build your signal basket from the token matrix and tune it by
+                chain in seconds.
+              </p>
+            </div>
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-[#b8cdf2] bg-white/78 px-2.5 py-1 text-[0.67rem] font-semibold uppercase tracking-[0.08em] text-[#355a96] shadow-[0_4px_12px_rgba(22,47,94,.12)] dark:border-[#4e6ea4] dark:bg-[#132542] dark:text-[#bfd4fa]">
+              <span>
+                {watchlistIds.length}/{availableCoins.length} selected
+              </span>
+              <span className="h-1.5 w-1.5 rounded-full bg-[#07beb8]" />
+            </div>
+          </header>
+          <div className="relative mt-2.5 flex flex-wrap items-center gap-1.5 text-[0.64rem] font-semibold uppercase tracking-[0.09em]">
+            <span className="rounded-full border border-[#c6d8f6] bg-white/75 px-2 py-0.5 text-[#5072a8] dark:border-[#466291] dark:bg-[#10203b] dark:text-[#a7c1ea]">
+              Smart Selection
             </span>
-            <span className="h-1.5 w-1.5 rounded-full bg-[#07beb8]" />
+            <span className="rounded-full border border-[#c6d8f6] bg-white/75 px-2 py-0.5 text-[#5072a8] dark:border-[#466291] dark:bg-[#10203b] dark:text-[#a7c1ea]">
+              Min 3 Tokens
+            </span>
           </div>
-        </header>
-        <div className="mb-2.5 grid gap-2">
-          <div className="flex flex-wrap items-center justify-end gap-1.5">
-            <button
-              type="button"
-              onClick={addVisibleToWatchlist}
-              className="rounded-[9px] border border-[color-mix(in_srgb,var(--line)_76%,#9bbcf8_24%)] bg-[color-mix(in_srgb,var(--surface-2)_74%,#e9f2ff_26%)] px-2.5 py-1 text-[0.72rem] font-semibold text-[color-mix(in_srgb,var(--ink)_82%,#3a5f9d_18%)] transition hover:border-[#9fbef7] hover:bg-[#eaf2ff] dark:border-[#3b5586] dark:bg-[#14233f] dark:text-[#bad0f5] dark:hover:border-[#5f82bd] dark:hover:bg-[#1a2f56]"
-            >
-              Add Visible
-            </button>
-            <button
-              type="button"
-              onClick={resetWatchlist}
-              className="rounded-[9px] border border-[color-mix(in_srgb,var(--line)_76%,#9bbcf8_24%)] bg-[color-mix(in_srgb,var(--surface-2)_74%,#e9f2ff_26%)] px-2.5 py-1 text-[0.72rem] font-semibold text-[color-mix(in_srgb,var(--ink)_82%,#3a5f9d_18%)] transition hover:border-[#9fbef7] hover:bg-[#eaf2ff] dark:border-[#3b5586] dark:bg-[#14233f] dark:text-[#bad0f5] dark:hover:border-[#5f82bd] dark:hover:bg-[#1a2f56]"
-            >
-              Reset
-            </button>
-          </div>
+        </div>
+        <div className="mb-3 grid gap-2.5 lg:grid-cols-[1fr_auto] lg:items-center">
           <div className="flex flex-wrap gap-1.5">
             {chainFilters.map((chain) => (
               <button
@@ -365,27 +364,43 @@ export function DashboardShell({
                 type="button"
                 onClick={() => setChainFilter(chain)}
                 className={cn(
-                  "rounded-full border px-2 py-1 text-[0.66rem] font-semibold uppercase tracking-[0.07em] transition",
+                  "rounded-full border px-2.5 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.08em] transition",
                   chainFilter === chain
-                    ? "border-[#89b1ff] bg-[#eaf2ff] text-[#244d93] dark:border-[#6b95e2] dark:bg-[#1a3159] dark:text-[#c0d4ff]"
-                    : "border-[#d2e0f8] bg-white/80 text-[#5c739f] hover:border-[#a8c1ef] hover:bg-[#f4f8ff] dark:border-[#39537f] dark:bg-[#11203a] dark:text-[#8ea8d4] dark:hover:border-[#5778af] dark:hover:bg-[#162949]",
+                    ? "border-[#8db2f4] bg-[linear-gradient(135deg,#edf4ff,#e7f1ff)] text-[#234d94] shadow-[0_5px_14px_rgba(37,73,134,.16)] dark:border-[#6e96dd] dark:bg-[linear-gradient(135deg,#1a315a,#1f3967)] dark:text-[#c4d8ff]"
+                    : "border-[#d1dff7] bg-white/78 text-[#5f78a3] hover:border-[#abc4ee] hover:bg-[#f3f8ff] dark:border-[#3d5888] dark:bg-[#12213b] dark:text-[#8ea9d6] dark:hover:border-[#5f81b6] dark:hover:bg-[#162948]",
                 )}
               >
                 {chain}
               </button>
             ))}
           </div>
+          <div className="flex flex-wrap items-center justify-start gap-1.5 lg:justify-end">
+            <button
+              type="button"
+              onClick={addVisibleToWatchlist}
+              className="rounded-[10px] border border-[#9cc0f5] bg-[linear-gradient(135deg,#eaf2ff,#dfeeff)] px-2.5 py-1.5 text-[0.71rem] font-bold tracking-[0.02em] text-[#2e5697] shadow-[0_5px_12px_rgba(31,66,126,.14)] transition hover:-translate-y-[1px] hover:border-[#84acee] hover:bg-[#e5efff] dark:border-[#4e72aa] dark:bg-[linear-gradient(135deg,#1a3157,#1f3b66)] dark:text-[#c8dbff] dark:hover:border-[#648ac6] dark:hover:bg-[#22406f]"
+            >
+              Add Visible
+            </button>
+            <button
+              type="button"
+              onClick={resetWatchlist}
+              className="rounded-[10px] border border-[#cfdef5] bg-white/78 px-2.5 py-1.5 text-[0.71rem] font-semibold tracking-[0.02em] text-[#4d6896] transition hover:border-[#b5caeb] hover:bg-[#f4f8ff] dark:border-[#425f8f] dark:bg-[#12213b] dark:text-[#afc5ea] dark:hover:border-[#5f81b6] dark:hover:bg-[#162948]"
+            >
+              Reset
+            </button>
+          </div>
         </div>
-        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
           {filteredCoins.map((coin) => {
             const checked = watchlistIds.includes(coin.id);
             return (
               <label
                 key={coin.id}
                 className={cn(
-                  "group relative grid grid-cols-[auto_1fr_auto] items-center gap-2 rounded-xl border border-[#d8e4ff] bg-[linear-gradient(150deg,#f9fbff,#f3f8ff)] px-2.5 py-2 shadow-[0_3px_10px_rgba(26,44,82,.06)] transition hover:-translate-y-[1px] hover:border-[#b8cffc] hover:shadow-[0_10px_18px_rgba(23,40,72,.11)] dark:border-[#2d4066] dark:bg-[linear-gradient(145deg,#101a2f,#111e36)] dark:hover:border-[#4a6fa9]",
+                  "group relative grid grid-cols-[auto_1fr_auto] items-center gap-2 rounded-xl border border-[#d8e4ff] bg-[linear-gradient(145deg,#fbfdff,#f2f7ff)] px-2.5 py-2.5 shadow-[0_4px_12px_rgba(26,44,82,.07)] transition hover:-translate-y-[1px] hover:border-[#afc8f6] hover:shadow-[0_12px_20px_rgba(23,40,72,.12)] dark:border-[#314972] dark:bg-[linear-gradient(145deg,#101c33,#13223d)] dark:hover:border-[#567cb7]",
                   checked &&
-                    "border-[#7ca8ff] bg-[linear-gradient(145deg,#edf4ff,#e7f1ff)] ring-1 ring-[#8eb4ff]/60 dark:border-[#6c95dd] dark:bg-[linear-gradient(145deg,#14284b,#162b4f)] dark:ring-[#6f98e8]/55",
+                    "border-[#7ca8ff] bg-[linear-gradient(145deg,#edf4ff,#e5f0ff)] ring-1 ring-[#8eb4ff]/65 dark:border-[#6f97df] dark:bg-[linear-gradient(145deg,#17305a,#1a345f)] dark:ring-[#6f98e8]/55",
                 )}
               >
                 <input
@@ -397,9 +412,9 @@ export function DashboardShell({
                 <span
                   aria-hidden="true"
                   className={cn(
-                    "inline-flex h-[18px] w-[18px] items-center justify-center rounded-[6px] border border-[#adc5f2] bg-white text-[11px] font-black text-transparent transition dark:border-[#4a6491] dark:bg-[#0f1a30]",
+                    "inline-flex h-[18px] w-[18px] items-center justify-center rounded-[6px] border border-[#adc5f2] bg-white text-[11px] font-black text-transparent transition dark:border-[#4f6da0] dark:bg-[#0f1a30]",
                     checked &&
-                      "border-[#3a86ff] bg-[#3a86ff] text-white dark:border-[#78a7ff] dark:bg-[#5d8ff2]",
+                      "border-[#3a86ff] bg-[linear-gradient(135deg,#3a86ff,#4da3ff)] text-white dark:border-[#78a7ff] dark:bg-[linear-gradient(135deg,#5d8ff2,#6ea4ff)]",
                   )}
                 >
                   ✓
@@ -638,29 +653,65 @@ export function DashboardShell({
         </div>
       </section>
 
-      <footer className="relative -mx-7 mt-10 px-7 pb-2 pt-2.5 max-md:-mx-3.5 max-md:px-3.5 motion-safe:[animation:fadeUp_.62s_ease-out_.72s_both]">
+      <footer className="relative -mx-7 mt-10 px-7 pb-2 pt-3 max-md:-mx-3.5 max-md:px-3.5 motion-safe:[animation:fadeUp_.62s_ease-out_.72s_both]">
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute left-0 top-0 h-px w-full bg-[linear-gradient(90deg,transparent,rgba(58,134,255,.6),rgba(255,107,53,.55),transparent)]"
+          className="pointer-events-none absolute left-0 top-0 h-px w-full bg-[linear-gradient(90deg,transparent,rgba(138,168,218,.58),transparent)]"
         />
-        <div className="mt-5 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-[#d6e3fb] bg-[linear-gradient(120deg,rgba(255,255,255,.72),rgba(239,247,255,.6))] px-3 py-5 shadow-[0_6px_18px_rgba(16,30,62,.08)] dark:border-[#30466f] dark:bg-[linear-gradient(120deg,rgba(13,21,37,.9),rgba(15,24,43,.92))]">
-          <p className="m-0 inline-flex items-center gap-2 text-[0.76rem] tracking-[0.045em] text-slate-700 dark:text-[#c4d7fb]">
-            <span className="inline-flex h-[18px] w-[18px] items-center justify-center rounded-full border border-[#b7c9ed] dark:border-[#355184]">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#ff6b35] motion-safe:[animation:blink_1.8s_ease-in-out_infinite]" />
-            </span>
-            Crafted by
-            <a
-              className="font-black text-[#355a9a] underline decoration-transparent underline-offset-[3px] transition hover:decoration-current focus-visible:decoration-current dark:text-[#a9b9ff]"
-              href="http://x.com/akshxdevs"
-              rel="noreferrer"
-              target="_blank"
+        <div className="mt-4 grid gap-3 rounded-2xl border border-[#d9e4f6] bg-[linear-gradient(145deg,rgba(255,255,255,.84),rgba(244,249,255,.78))] p-4 shadow-[0_10px_22px_rgba(18,32,66,.08)] dark:border-[#2f466f] dark:bg-[linear-gradient(145deg,rgba(14,24,42,.94),rgba(15,27,47,.92))]">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div className="min-w-0">
+              <p className="m-0 text-[0.78rem] font-semibold tracking-[0.035em] text-[#475f87] dark:text-[#bdd0f3]">
+                Data Dash Arena
+              </p>
+              <p className="m-0 mt-1 text-[0.7rem] tracking-[0.02em] text-[#647da5] dark:text-[#96afd8]">
+                Built for signal clarity, updated in real time.
+              </p>
+            </div>
+            <nav
+              aria-label="Footer"
+              className="flex flex-wrap items-center gap-1.5 text-[0.68rem] uppercase tracking-[0.08em]"
             >
-              akshxdevs
-            </a>
-          </p>
-          <p className="m-0 rounded-full border border-[#cfddf6] bg-white/70 px-2 py-1 text-[0.64rem] uppercase tracking-[0.11em] text-slate-600 dark:border-[#324f7e] dark:bg-[#101c33] dark:text-[#8fa8d6]">
-            © {year} All Rights Reserved
-          </p>
+              <a
+                className="rounded-full border border-[#d4e0f2] bg-white/70 px-2.5 py-1 text-[#4f688f] transition hover:border-[#b4c9eb] hover:bg-[#f4f8ff] dark:border-[#3d5888] dark:bg-[#101f38] dark:text-[#b7cbef] dark:hover:border-[#5d7daf] dark:hover:bg-[#132744]"
+                href="#"
+              >
+                Overview
+              </a>
+              <a
+                className="rounded-full border border-[#d4e0f2] bg-white/70 px-2.5 py-1 text-[#4f688f] transition hover:border-[#b4c9eb] hover:bg-[#f4f8ff] dark:border-[#3d5888] dark:bg-[#101f38] dark:text-[#b7cbef] dark:hover:border-[#5d7daf] dark:hover:bg-[#132744]"
+                href="#"
+              >
+                Changelog
+              </a>
+              <a
+                className="rounded-full border border-[#d4e0f2] bg-white/70 px-2.5 py-1 text-[#4f688f] transition hover:border-[#b4c9eb] hover:bg-[#f4f8ff] dark:border-[#3d5888] dark:bg-[#101f38] dark:text-[#b7cbef] dark:hover:border-[#5d7daf] dark:hover:bg-[#132744]"
+                href="#"
+              >
+                Contact
+              </a>
+            </nav>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[#dbe6f6] pt-3 dark:border-[#314a73]">
+            <p className="m-0 inline-flex items-center gap-2 text-[0.74rem] tracking-[0.02em] text-slate-700 dark:text-[#c4d7fb]">
+              <span className="inline-flex h-[18px] w-[18px] items-center justify-center rounded-full border border-[#b7c9ed] dark:border-[#3f5c8c]">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#4cb894] motion-safe:[animation:blink_1.8s_ease-in-out_infinite]" />
+              </span>
+              Crafted by
+              <a
+                className="font-black text-[#355a9a] underline decoration-transparent underline-offset-[3px] transition hover:decoration-current focus-visible:decoration-current dark:text-[#a9b9ff]"
+                href="http://x.com/akshxdevs"
+                rel="noreferrer"
+                target="_blank"
+              >
+                akshxdevs
+              </a>
+            </p>
+            <p className="m-0 rounded-full border border-[#cfddf6] bg-white/70 px-2.5 py-1 text-[0.64rem] uppercase tracking-[0.11em] text-slate-600 dark:border-[#365483] dark:bg-[#101c33] dark:text-[#9ab1d9]">
+              © {year} All Rights Reserved
+            </p>
+          </div>
         </div>
       </footer>
     </div>

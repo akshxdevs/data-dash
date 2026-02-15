@@ -15,14 +15,14 @@ export function AppBar({
   loading: boolean;
 }) {
   return (
-    <header className="relative grid items-center gap-3 rounded-2xl border border-[var(--line)] bg-[linear-gradient(120deg,rgba(255,255,255,.94),rgba(243,248,255,.9))] px-3 py-2 shadow-[0_12px_28px_rgba(17,29,54,.12)] backdrop-blur-md max-sm:grid-cols-1 sm:grid-cols-[auto_1fr_auto] motion-safe:[animation:fadeUp_.55s_ease-out_both] dark:bg-[linear-gradient(120deg,rgba(15,25,44,.95),rgba(12,20,36,.94))] dark:shadow-[0_14px_30px_rgba(2,6,16,.4)]">
-      <div className="flex min-w-0 items-center gap-2.5">
-        <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-[linear-gradient(135deg,#ffb703,#ff6b35)] text-xs font-black text-slate-900 shadow-[0_8px_18px_rgba(255,107,53,.35)]">
+    <header className="relative flex items-center justify-between gap-2 rounded-2xl border border-[var(--line)] bg-[linear-gradient(120deg,rgba(255,255,255,.94),rgba(243,248,255,.9))] px-2.5 py-2 shadow-[0_12px_28px_rgba(17,29,54,.12)] backdrop-blur-md motion-safe:[animation:fadeUp_.55s_ease-out_both] sm:gap-3 sm:px-3 dark:bg-[linear-gradient(120deg,rgba(15,25,44,.95),rgba(12,20,36,.94))] dark:shadow-[0_14px_30px_rgba(2,6,16,.4)]">
+      <div className="flex min-w-0 flex-1 items-center gap-2.5">
+        <span className="inline-flex h-7 w-7 items-center justify-center rounded-xl bg-[linear-gradient(135deg,#ffb703,#ff6b35)] text-[0.65rem] font-black text-slate-900 shadow-[0_8px_18px_rgba(255,107,53,.35)] sm:h-8 sm:w-8 sm:text-xs">
           DD
         </span>
         <div className="min-w-0">
-          <p className="m-0 truncate font-[var(--font-montserrat)] text-[0.95rem] font-black leading-tight text-[var(--ink)]">
-            Data Dash Arena
+          <p className="m-0 truncate font-[var(--font-montserrat)] text-[0.86rem] font-black leading-tight text-[var(--ink)] sm:text-[0.95rem]">
+            Data Dash
           </p>
           <small className="m-0 hidden truncate text-[0.7rem] text-[var(--muted)] sm:block">
             Intelligence Console
@@ -30,13 +30,13 @@ export function AppBar({
         </div>
       </div>
 
-      <div className="flex items-center gap-2 whitespace-nowrap max-sm:justify-self-start">
+      <div className="ml-auto flex shrink-0 items-center gap-1.5 whitespace-nowrap sm:gap-2">
         <p
           title={
             source === "live" ? "Live data source" : "Fallback data source"
           }
           className={cn(
-            "m-0 inline-flex items-center gap-1 rounded-full px-2 py-1 text-[0.72rem] font-bold",
+            "m-0 inline-flex items-center gap-1 rounded-full px-2 py-1 text-[0.66rem] font-bold sm:text-[0.72rem]",
             source === "live"
               ? "bg-[#d2f9f0] text-[#045b55] dark:bg-[#113834] dark:text-[#86f6de]"
               : "bg-[#ffe9c9] text-[#8b5d00] dark:bg-[#3f3316] dark:text-[#ffd899]",
@@ -55,7 +55,7 @@ export function AppBar({
           {formatLocalTime(lastUpdated)}
         </small>
 
-        <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-[#d6e5ff] bg-[#eaf2ff] dark:border-[#2d4066] dark:bg-[#162540]">
+        <span className="hidden h-6 w-6 items-center justify-center rounded-full border border-[#d6e5ff] bg-[#eaf2ff] sm:inline-flex dark:border-[#2d4066] dark:bg-[#162540]">
           <svg
             viewBox="0 0 24 24"
             className="h-3.5 w-3.5 fill-[#355587] dark:fill-[#ffd166]"
@@ -67,7 +67,7 @@ export function AppBar({
 
         <button
           type="button"
-          className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#1a2b48] bg-[#1a2b48] text-white transition hover:brightness-110 dark:border-[#ffd166] dark:bg-[#ffd166] dark:text-[#17233d]"
+          className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-[#1a2b48] bg-[#1a2b48] text-white transition hover:brightness-110 sm:h-8 sm:w-8 dark:border-[#ffd166] dark:bg-[#ffd166] dark:text-[#17233d]"
           onClick={onToggleTheme}
           aria-label={
             theme === "light" ? "Switch to dark theme" : "Switch to light theme"
