@@ -15,7 +15,7 @@ export function AppBar({
   loading: boolean;
 }) {
   return (
-    <header className="relative grid grid-cols-[auto_1fr_auto] items-center gap-3 rounded-2xl border border-[var(--line)] bg-[linear-gradient(120deg,rgba(255,255,255,.93),rgba(243,248,255,.88))] px-3 py-2 shadow-[0_14px_34px_rgba(17,29,54,.12)] backdrop-blur-md dark:bg-[linear-gradient(120deg,rgba(15,26,46,.92),rgba(13,22,38,.9))]">
+    <header className="relative grid items-center gap-3 rounded-2xl border border-[var(--line)] bg-[linear-gradient(120deg,rgba(255,255,255,.93),rgba(243,248,255,.88))] px-3 py-2 shadow-[0_14px_34px_rgba(17,29,54,.12)] backdrop-blur-md max-sm:grid-cols-1 sm:grid-cols-[auto_1fr_auto] dark:bg-[linear-gradient(120deg,rgba(15,26,46,.92),rgba(13,22,38,.9))]">
       <div className="flex min-w-0 items-center gap-2.5">
         <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-[linear-gradient(135deg,#ffb703,#ff6b35)] text-xs font-black text-slate-900 shadow-[0_8px_18px_rgba(255,107,53,.35)]">
           DD
@@ -28,7 +28,7 @@ export function AppBar({
 
       <nav
         aria-label="Dashboard quick tabs"
-        className="no-scrollbar justify-self-stretch overflow-x-auto whitespace-nowrap rounded-full border border-[#dce7ff] bg-[#f6faff] p-1 dark:border-[#2a3c63] dark:bg-[#101b31]"
+        className="no-scrollbar justify-self-stretch overflow-x-auto whitespace-nowrap rounded-full border border-[#dce7ff] bg-[#f6faff] p-1 max-sm:w-full dark:border-[#2a3c63] dark:bg-[#101b31]"
       >
         <div className="flex items-center gap-1">
           {[
@@ -52,7 +52,7 @@ export function AppBar({
         </div>
       </nav>
 
-      <div className="flex items-center gap-2 whitespace-nowrap">
+      <div className="flex items-center gap-2 whitespace-nowrap max-sm:justify-self-start">
         <p
           title={source === "live" ? "Live data source" : "Fallback data source"}
           className={cn(

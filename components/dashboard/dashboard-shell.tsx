@@ -292,13 +292,11 @@ export function DashboardShell({
 
   return (
     <div className="relative mx-auto flex w-full max-w-[1280px] flex-col gap-3 p-7 max-md:p-3.5 text-[var(--ink)]">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-x-[-20px] top-[-50px] -z-10 h-[340px] overflow-hidden">
-        <span className="absolute left-[-40px] top-3 h-[220px] w-[220px] rounded-full bg-[radial-gradient(circle,rgba(255,107,53,.35),rgba(255,107,53,0))] [animation:drift_16s_ease-in-out_infinite]" />
-        <span className="absolute right-[6%] top-[-40px] h-[260px] w-[260px] rounded-full bg-[radial-gradient(circle,rgba(58,134,255,.3),rgba(58,134,255,0))] [animation:drift_16s_ease-in-out_infinite] [animation-delay:2s]" />
-        <span className="absolute right-[30%] top-[54px] h-[180px] w-[180px] rounded-full bg-[radial-gradient(circle,rgba(7,190,184,.35),rgba(7,190,184,0))] [animation:drift_16s_ease-in-out_infinite] [animation-delay:4s]" />
-        <span className="absolute left-[10%] top-[18%] h-[220px] w-[420px] rounded-[999px] bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,.35),rgba(255,255,255,0))] blur-3xl [animation:smokeFloat_18s_ease-in-out_infinite]" />
-        <span className="absolute right-[8%] top-[8%] h-[180px] w-[360px] rounded-[999px] bg-[radial-gradient(ellipse_at_center,rgba(130,167,255,.22),rgba(130,167,255,0))] blur-3xl [animation:smokeFloat_22s_ease-in-out_infinite] [animation-delay:3s]" />
-        <span className="absolute left-[35%] top-[34%] h-[170px] w-[300px] rounded-[999px] bg-[radial-gradient(ellipse_at_center,rgba(255,186,120,.18),rgba(255,186,120,0))] blur-3xl [animation:smokeFloat_20s_ease-in-out_infinite] [animation-delay:6s]" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-[-20px] top-[-50px] -z-10 h-[340px] overflow-hidden transition-opacity duration-300 dark:opacity-0">
+        <span className="absolute left-[-6%] top-[-4%] h-[190px] w-[520px] rounded-[999px] bg-[linear-gradient(115deg,rgba(255,193,155,.42),rgba(255,193,155,0))] blur-3xl [animation:smokeFloat_20s_ease-in-out_infinite]" />
+        <span className="absolute right-[-4%] top-[2%] h-[210px] w-[540px] rounded-[999px] bg-[linear-gradient(250deg,rgba(150,188,255,.4),rgba(150,188,255,0))] blur-3xl [animation:smokeFloat_24s_ease-in-out_infinite] [animation-delay:2s]" />
+        <span className="absolute left-[16%] top-[18%] h-[180px] w-[470px] rounded-[999px] bg-[linear-gradient(130deg,rgba(162,232,220,.28),rgba(162,232,220,0))] blur-3xl [animation:smokeFloat_22s_ease-in-out_infinite] [animation-delay:4s]" />
+        <span className="absolute right-[18%] top-[30%] h-[150px] w-[360px] rounded-[999px] bg-[linear-gradient(190deg,rgba(255,221,189,.28),rgba(255,221,189,0))] blur-3xl [animation:smokeFloat_26s_ease-in-out_infinite] [animation-delay:6s]" />
       </div>
 
       <AppBar
