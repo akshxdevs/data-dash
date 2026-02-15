@@ -275,28 +275,39 @@ export function DashboardShell({
         />
       </div>
 
-      <section className="motion-safe:[animation:fadeUp_.6s_ease-out_.08s_both]">
-        <div className="grid gap-2 rounded-xl border border-[var(--line)] bg-[var(--surface-2)] p-2.5">
-          <div className="flex flex-wrap items-center gap-2">
-            {INTERVALS.map((item) => (
-              <button
-                key={item}
+      <section className="mx-auto w-full md:w-1/2 motion-safe:[animation:fadeUp_.6s_ease-out_.08s_both]">
+        <div className="rounded-2xl border border-[color-mix(in_srgb,var(--line)_86%,#9fb8e0_14%)] bg-[color-mix(in_srgb,var(--surface-2)_92%,white_8%)] p-2.5 shadow-[0_8px_24px_rgba(17,35,74,.08)] dark:border-[#2f466f] dark:bg-[color-mix(in_srgb,var(--surface-2)_92%,#0f1c34_8%)] dark:shadow-[0_10px_24px_rgba(2,8,20,.34)]">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <div className="inline-flex w-full items-center gap-1 rounded-xl border border-[#d8e4f8] bg-[color-mix(in_srgb,white_92%,#eef4ff_8%)] p-1 sm:w-auto dark:border-[#354e79] dark:bg-[#0f1a30]">
+              {INTERVALS.map((item) => (
+                <button
+                  key={item}
+                  className={cn(
+                    "cursor-pointer rounded-[9px] px-3 py-1.5 text-[0.72rem] font-semibold uppercase tracking-[0.06em] transition-colors",
+                    item === interval
+                      ? "border border-[#bfd2f5] bg-[#eaf2ff] text-[#294b82] dark:border-[#4d6da1] dark:bg-[#1b2f52] dark:text-[#d4e2fb]"
+                      : "border border-transparent text-[#5d7398] hover:bg-[#f3f7ff] hover:text-[#3a557f] dark:text-[#a0b4d8] dark:hover:bg-[#152541] dark:hover:text-[#d8e5ff]",
+                  )}
+                  onClick={() => setInterval(item)}
+                  type="button"
+                >
+                  {item.toUpperCase()}
+                </button>
+              ))}
+            </div>
+            <span className="inline-flex items-center gap-2 self-start rounded-full border border-[#d4e0f3] bg-[#f7faff] px-3 py-1.5 text-[0.69rem] font-medium uppercase tracking-[0.08em] text-[#4f678f] sm:self-auto dark:border-[#415c8a] dark:bg-[#11213c] dark:text-[#bad0f2]">
+              <i
+                aria-hidden="true"
                 className={cn(
-                  "cursor-pointer rounded-full border px-2.5 py-1.5 text-[0.75rem]",
-                  item === interval
-                    ? "border-[#0e1728] bg-[#0e1728] text-white dark:border-[#ffd166] dark:bg-[#ffd166] dark:text-[#17233d]"
-                    : "border-[#d4e0fb] bg-[#f5f9ff] text-[#35496f] dark:border-[#31486f] dark:bg-[#101a2d] dark:text-[#a9bee8]",
+                  "h-2 w-2 rounded-full",
+                  loading
+                    ? "bg-[#f3a55a] shadow-[0_0_0_4px_rgba(243,165,90,.22)] animate-pulse"
+                    : "bg-[#4cb894] shadow-[0_0_0_4px_rgba(76,184,148,.2)]",
                 )}
-                onClick={() => setInterval(item)}
-                type="button"
-              >
-                {item.toUpperCase()}
-              </button>
-            ))}
+              />
+              {loading ? "Refreshing" : "Live Sync"}
+            </span>
           </div>
-          <span className="mx-auto block w-1/2 text-center text-[0.77rem] text-[var(--muted)]">
-            {loading ? "Refreshing..." : "Live sync"}
-          </span>
         </div>
       </section>
 
@@ -314,13 +325,13 @@ export function DashboardShell({
           aria-hidden="true"
           className="pointer-events-none absolute left-[-48px] bottom-[-40px] h-32 w-44 rounded-full bg-[radial-gradient(circle,rgba(255,107,53,.15),transparent_72%)] blur-xl"
         />
-        <header className="mb-2.5 flex flex-wrap items-center justify-between gap-2.5 border-b border-[var(--line)] pb-2">
-          <div>
-            <h2 className="m-0 font-[var(--font-montserrat)] text-[1.12rem] font-extrabold text-[var(--ink)]">
+        <header className="mb-2.5 flex flex-wrap items-start justify-between gap-2.5 border-b border-[var(--line)] pb-2">
+          <div className="min-w-0 flex-1">
+            <h2 className="m-0 text-[1.04rem] font-[var(--font-montserrat)] font-extrabold tracking-[0.01em] text-[var(--ink)]">
               Watchlist Builder
             </h2>
-            <p className="m-0 mt-0.5 text-[0.74rem] tracking-[0.03em] text-[var(--muted)]">
-              Build your signal basket from the token matrix
+            <p className="m-0 mt-1 max-w-[32ch] text-[0.75rem] leading-[1.35] tracking-[0.015em] text-[var(--muted)]">
+              Curate your signal basket from the token matrix.
             </p>
           </div>
           <div className="inline-flex items-center gap-1.5 rounded-full border border-[color-mix(in_srgb,var(--line)_80%,#8ab3ff_20%)] bg-[color-mix(in_srgb,var(--surface-2)_72%,#dceaff_28%)] px-2.5 py-1 text-[0.68rem] font-semibold tracking-[0.07em] text-[color-mix(in_srgb,var(--ink)_80%,#3d5f99_20%)] dark:bg-[color-mix(in_srgb,var(--surface-2)_76%,#1b3056_24%)] dark:text-[color-mix(in_srgb,var(--ink)_88%,#b8d0ff_12%)]">
