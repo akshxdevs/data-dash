@@ -25,13 +25,13 @@ export function LeaderboardTable({ tokens }: { tokens: ArenaToken[] }) {
                 "Sentiment",
                 "7D Price Arc",
               ].map((th) => (
-                <th key={th} className="sticky top-0 z-[1] border-b border-[var(--line)] bg-[#16233f] px-2 py-2.5 text-left text-[0.73rem] uppercase tracking-[0.08em] text-[var(--muted)]">{th}</th>
+                <th key={th} className="sticky top-0 z-[1] border-b border-[var(--line)] bg-[#f4f8ff] px-2 py-2.5 text-left text-[0.73rem] uppercase tracking-[0.08em] text-[var(--muted)] dark:bg-[#16233f]">{th}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {tokens.map((token, idx) => (
-              <tr key={token.symbol} className="transition hover:bg-[#16243f]">
+              <tr key={token.symbol} className="transition hover:bg-[#f8fbff] dark:hover:bg-[#16243f]">
                 <td className="border-b border-[var(--line)] px-2 py-2.5 text-[0.84rem]">{idx + 1}</td>
                 <td className="border-b border-[var(--line)] px-2 py-2.5 text-[0.84rem]">
                   <strong className="text-[var(--ink)]">{token.symbol}</strong>

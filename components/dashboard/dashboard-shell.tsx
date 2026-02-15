@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { DonutFlow } from "@/components/dashboard/donut-flow";
 import { AppBar } from "@/components/dashboard/app-bar";
@@ -87,7 +87,7 @@ const panelCls =
   "rounded-2xl border border-[var(--line)] bg-[var(--panel-bg)] p-[14px] shadow-[0_10px_24px_rgba(2,7,16,.35)] transition hover:-translate-y-[1px] hover:border-[#4b66a3] hover:shadow-[0_16px_32px_rgba(2,7,16,.45)]";
 
 const controlInputCls =
-  "w-full min-w-0 rounded-[10px] border border-[#31486f] bg-[#0f172a] px-2.5 py-[7px] text-[0.8rem] text-[#dbe6ff] outline-none focus:border-[#6f90d7]";
+  "w-full min-w-0 rounded-[10px] border border-[#d4e0fb] bg-white px-2.5 py-[7px] text-[0.8rem] text-[#2b3d61] outline-none focus:border-[#90b2ff] dark:border-[#31486f] dark:bg-[#0f172a] dark:text-[#dbe6ff] dark:focus:border-[#6f90d7]";
 
 export function DashboardShell({
   initialData,
@@ -101,7 +101,7 @@ export function DashboardShell({
   const [data, setData] = useState(initialData);
   const [interval, setInterval] = useState<ArenaInterval>(initialData.interval);
   const [watchlistIds, setWatchlistIds] = useState<string[]>(defaultIds);
-  const [theme, setTheme] = useState<"light" | "dark">("dark");
+  const [theme, setTheme] = useState<"light" | "dark">("light");
   const [loading, setLoading] = useState(false);
 
   const [presets, setPresets] = useState<Preset[]>([]);
@@ -120,29 +120,17 @@ export function DashboardShell({
   const [compareA, setCompareA] = useState(defaultIds[0] ?? "");
   const [compareB, setCompareB] = useState(defaultIds[1] ?? defaultIds[0] ?? "");
 
-  const toggleTheme = useCallback(() => {
-    const nextTheme = theme === "light" ? "dark" : "light";
-    const docWithTransition = document as Document & {
-      startViewTransition?: (callback: () => void) => { finished: Promise<void> };
-    };
+  const themeTransitionTimerRef = useRef<number | null>(null);
 
-    if (!docWithTransition.startViewTransition) {
-      document.documentElement.classList.add("theme-switching");
-      setTheme(nextTheme);
-      window.setTimeout(() => {
-        document.documentElement.classList.remove("theme-switching");
-      }, 420);
-      return;
+  const toggleTheme = () => {
+    if (themeTransitionTimerRef.current) {
+      window.clearTimeout(themeTransitionTimerRef.current);
+      themeTransitionTimerRef.current = null;
     }
 
     document.documentElement.classList.add("theme-switching");
-    const transition = docWithTransition.startViewTransition(() => {
-      setTheme(nextTheme);
-    });
-    transition.finished.finally(() => {
-      document.documentElement.classList.remove("theme-switching");
-    });
-  }, [theme]);
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+  };
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("arena_theme");
@@ -176,6 +164,21 @@ export function DashboardShell({
     document.documentElement.dataset.theme = theme;
     document.documentElement.classList.toggle("dark", theme === "dark");
     localStorage.setItem("arena_theme", theme);
+
+    if (themeTransitionTimerRef.current) {
+      window.clearTimeout(themeTransitionTimerRef.current);
+    }
+    themeTransitionTimerRef.current = window.setTimeout(() => {
+      document.documentElement.classList.remove("theme-switching");
+      themeTransitionTimerRef.current = null;
+    }, 380);
+
+    return () => {
+      if (themeTransitionTimerRef.current) {
+        window.clearTimeout(themeTransitionTimerRef.current);
+        themeTransitionTimerRef.current = null;
+      }
+    };
   }, [theme]);
 
   useEffect(() => {
@@ -344,7 +347,7 @@ export function DashboardShell({
                   "cursor-pointer rounded-full border px-2.5 py-1.5 text-[0.75rem]",
                   item === interval
                     ? "border-[#0e1728] bg-[#0e1728] text-white dark:border-[#ffd166] dark:bg-[#ffd166] dark:text-[#17233d]"
-                    : "border-[#31486f] bg-[#101a2d] text-[#a9bee8]",
+                    : "border-[#d4e0fb] bg-[#f5f9ff] text-[#35496f] dark:border-[#31486f] dark:bg-[#101a2d] dark:text-[#a9bee8]",
                 )}
                 onClick={() => setInterval(item)}
                 type="button"
@@ -358,7 +361,7 @@ export function DashboardShell({
 
         <div className="grid gap-2 rounded-xl border border-[var(--line)] bg-[var(--surface-2)] p-2.5 sm:grid-cols-[minmax(0,1fr)_auto_minmax(140px,220px)] sm:items-center">
           <input className={controlInputCls} value={presetName} onChange={(e) => setPresetName(e.target.value)} placeholder="Preset name" />
-          <button className="rounded-[9px] border border-[#31528c] bg-[#142548] px-2.5 py-[7px] text-[0.8rem] text-[#e7efff] whitespace-nowrap hover:bg-[#1b325f]" onClick={savePreset} type="button">Save Preset</button>
+          <button className="rounded-[9px] border border-[#1b2c4b] bg-[#1b2c4b] px-2.5 py-[7px] text-[0.8rem] text-white whitespace-nowrap hover:brightness-110 dark:border-[#31528c] dark:bg-[#142548] dark:text-[#e7efff] dark:hover:bg-[#1b325f]" onClick={savePreset} type="button">Save Preset</button>
           <select
             className={controlInputCls}
             defaultValue=""
@@ -385,8 +388,8 @@ export function DashboardShell({
             const checked = watchlistIds.includes(coin.id);
             return (
             <label key={coin.id} className={cn(
-              "grid grid-cols-[auto_1fr] items-center gap-x-2 gap-y-0.5 rounded-[10px] border border-[#2d4066] bg-[#101a2f] p-2 transition hover:border-[#3d5b90]",
-              checked && "border-[#5d83c7] bg-[#162441]",
+              "grid grid-cols-[auto_1fr] items-center gap-x-2 gap-y-0.5 rounded-[10px] border border-[#d8e4ff] bg-[#f8fbff] p-2 transition hover:border-[#bfd2fb] dark:border-[#2d4066] dark:bg-[#101a2f] dark:hover:border-[#3d5b90]",
+              checked && "border-[#8eb4ff] bg-[#eef5ff] dark:border-[#5d83c7] dark:bg-[#162441]",
             )}>
               <input
                 className="row-span-2 accent-[#3a86ff]"
@@ -450,7 +453,7 @@ export function DashboardShell({
           <p className="m-0 text-[0.82rem] text-[var(--muted)] sm:justify-self-end">Correlation <strong className="text-[var(--ink)]">{compareCorrelation.toFixed(2)}</strong></p>
         </div>
         <div className="grid gap-2.5 xl:grid-cols-[1.4fr_1fr]">
-          <article className="rounded-xl border border-[#2d4066] bg-[#101a2f] p-2.5">
+          <article className="rounded-xl border border-[#dbe6ff] bg-[#f8fbff] p-2.5 dark:border-[#2d4066] dark:bg-[#101a2f]">
             <h4 className="m-0 font-[var(--font-montserrat)] text-[0.95rem] font-extrabold">{compareTokenA?.symbol} vs {compareTokenB?.symbol}</h4>
             <svg viewBox="0 0 220 70" className="mt-2 h-[72px] w-full" aria-hidden="true">
               <path d={linePath(relativeDiff, 220, 70, 8)} fill="none" stroke="#ff6b35" strokeWidth="3" />
@@ -459,7 +462,7 @@ export function DashboardShell({
               Relative edge: <strong className={cn((relativeDiff[relativeDiff.length - 1] ?? 0) >= 0 ? "text-[#0f9f84]" : "text-[#ce355c]")}>{formatSignedPct(relativeDiff[relativeDiff.length - 1] ?? 0)}</strong>
             </p>
           </article>
-          <article className="rounded-xl border border-[#2d4066] bg-[#101a2f] p-2.5">
+          <article className="rounded-xl border border-[#dbe6ff] bg-[#f8fbff] p-2.5 dark:border-[#2d4066] dark:bg-[#101a2f]">
             <h4 className="m-0 font-[var(--font-montserrat)] text-[0.95rem] font-extrabold">Quick Stats</h4>
             <p className="mt-2 text-[0.82rem] text-[var(--muted)]">{compareTokenA?.symbol}: {formatCurrency(compareTokenA?.marketCap ?? 0)}</p>
             <p className="mt-2 text-[0.82rem] text-[var(--muted)]">{compareTokenB?.symbol}: {formatCurrency(compareTokenB?.marketCap ?? 0)}</p>
@@ -475,7 +478,7 @@ export function DashboardShell({
         </header>
         <div className="grid gap-2.5 md:grid-cols-2 xl:grid-cols-3">
           {data.tokens.map((token) => (
-            <article key={token.id} className="rounded-xl border border-[#2d4066] bg-[#101a2f] p-2.5">
+            <article key={token.id} className="rounded-xl border border-[#dbe6ff] bg-[#f9fbff] p-2.5 dark:border-[#2d4066] dark:bg-[#101a2f]">
               <div className="mb-2 flex items-baseline justify-between">
                 <h4 className="m-0 font-[var(--font-montserrat)] text-[0.95rem] font-extrabold">{token.symbol}</h4>
                 <strong className="text-[var(--ink)]">{signalScore(token.signal)}</strong>
@@ -486,7 +489,7 @@ export function DashboardShell({
                 return (
                   <p key={key} className="mb-1.5 grid grid-cols-[100px_1fr] items-center gap-2 text-[0.76rem] text-[var(--muted)]">
                     <span>{key === "holderStrength" ? "Holder Strength" : key === "whalePenalty" ? "Whale Penalty" : key[0].toUpperCase() + key.slice(1)}</span>
-                    <i className="block h-2 w-full overflow-hidden rounded-full bg-[#1b2b49]">
+                    <i className="block h-2 w-full overflow-hidden rounded-full bg-[#e9f0ff] dark:bg-[#1b2b49]">
                       <b className={cn("block h-full bg-[linear-gradient(90deg,#07beb8,#3a86ff)]", isRisk && "bg-[linear-gradient(90deg,#ff6b35,#ef476f)]")} style={{ width: `${value}%` }} />
                     </i>
                   </p>
@@ -520,16 +523,16 @@ export function DashboardShell({
             </select>
             <input className={controlInputCls} type="number" value={alertForm.value} onChange={(e) => setAlertForm((prev) => ({ ...prev, value: Number(e.target.value) }))} placeholder="threshold" />
             <input className={cn(controlInputCls, "md:col-span-3")} value={alertForm.webhookUrl} onChange={(e) => setAlertForm((prev) => ({ ...prev, webhookUrl: e.target.value }))} placeholder="https://webhook.url (optional)" />
-            <button className="rounded-[9px] border border-[#31528c] bg-[#142548] px-2.5 py-[7px] text-[0.8rem] text-[#e7efff] whitespace-nowrap hover:bg-[#1b325f]" type="button" onClick={addAlert}>Add Alert</button>
+            <button className="rounded-[9px] border border-[#1b2c4b] bg-[#1b2c4b] px-2.5 py-[7px] text-[0.8rem] text-white whitespace-nowrap hover:brightness-110 dark:border-[#31528c] dark:bg-[#142548] dark:text-[#e7efff] dark:hover:bg-[#1b325f]" type="button" onClick={addAlert}>Add Alert</button>
           </div>
 
           <div className="mt-2.5 grid gap-2">
             {alerts.map((rule) => (
-              <article key={rule.id} className="flex items-center justify-between gap-2 rounded-[10px] border border-[#2d4066] bg-[#101a2f] p-2">
+              <article key={rule.id} className="flex items-center justify-between gap-2 rounded-[10px] border border-[#d8e4ff] bg-[#f8fbff] p-2 dark:border-[#2d4066] dark:bg-[#101a2f]">
                 <p className="m-0 text-[0.8rem]">
                   {data.tokens.find((token) => token.id === rule.tokenId)?.symbol ?? rule.tokenId} {rule.metric} {rule.operator} {rule.metric === "volume" ? formatCompact(rule.value) : rule.value}
                 </p>
-                <button className="cursor-pointer rounded-lg border border-[#c84f67] bg-[#3d1e2a] px-2 py-1 text-xs text-[#ff9bb4]" type="button" onClick={() => removeAlert(rule.id)}>Remove</button>
+                <button className="cursor-pointer rounded-lg border border-[#d84f68] bg-[#ffe7ec] px-2 py-1 text-xs text-[#b62b48] dark:border-[#c84f67] dark:bg-[#3d1e2a] dark:text-[#ff9bb4]" type="button" onClick={() => removeAlert(rule.id)}>Remove</button>
               </article>
             ))}
           </div>
@@ -545,7 +548,7 @@ export function DashboardShell({
               <p className="text-[0.82rem] text-[var(--muted)]">No triggers yet.</p>
             ) : (
               notifications.map((item) => (
-                <article key={item.id} className="flex items-center justify-between gap-2 rounded-[10px] border border-[#2d4066] bg-[#101a2f] p-2">
+                <article key={item.id} className="flex items-center justify-between gap-2 rounded-[10px] border border-[#d8e4ff] bg-[#f8fbff] p-2 dark:border-[#2d4066] dark:bg-[#101a2f]">
                   <p className="m-0 text-[0.8rem]">{item.text}</p>
                   <small className="text-[var(--muted)]">{new Date(item.at).toLocaleTimeString()}</small>
                 </article>
