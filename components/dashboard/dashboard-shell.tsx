@@ -283,7 +283,7 @@ export function DashboardShell({
                 <button
                   key={item}
                   className={cn(
-                    "shrink-0 cursor-pointer rounded-[9px] px-3 py-1.5 text-[0.72rem] font-semibold uppercase tracking-[0.06em] transition-colors",
+                    "shrink-0 cursor-pointer rounded-[8px] px-2 py-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.05em] transition-colors sm:rounded-[9px] sm:px-3 sm:text-[0.72rem] sm:tracking-[0.06em]",
                     item === interval
                       ? "border border-[#bfd2f5] bg-[#eaf2ff] text-[#294b82] dark:border-[#4d6da1] dark:bg-[#1b2f52] dark:text-[#d4e2fb]"
                       : "border border-transparent text-[#5d7398] hover:bg-[#f3f7ff] hover:text-[#3a557f] dark:text-[#a0b4d8] dark:hover:bg-[#152541] dark:hover:text-[#d8e5ff]",
@@ -670,22 +670,22 @@ export function DashboardShell({
             </div>
             <nav
               aria-label="Footer"
-              className="flex flex-wrap items-center gap-1.5 text-[0.68rem] uppercase tracking-[0.08em]"
+              className="flex w-full flex-nowrap items-center gap-1.5 overflow-x-auto no-scrollbar text-[0.6rem] uppercase tracking-[0.075em] sm:w-auto sm:text-[0.66rem]"
             >
               <a
-                className="rounded-full border border-[#d4e0f2] bg-white/70 px-2.5 py-1 text-[#4f688f] transition hover:border-[#b4c9eb] hover:bg-[#f4f8ff] dark:border-[#3d5888] dark:bg-[#101f38] dark:text-[#b7cbef] dark:hover:border-[#5d7daf] dark:hover:bg-[#132744]"
+                className="shrink-0 whitespace-nowrap rounded-full border border-[#d4e0f2] bg-white/70 px-2 py-1 text-[#4f688f] transition hover:border-[#b4c9eb] hover:bg-[#f4f8ff] sm:px-2.5 dark:border-[#3d5888] dark:bg-[#101f38] dark:text-[#b7cbef] dark:hover:border-[#5d7daf] dark:hover:bg-[#132744]"
                 href="#"
               >
                 Overview
               </a>
               <a
-                className="rounded-full border border-[#d4e0f2] bg-white/70 px-2.5 py-1 text-[#4f688f] transition hover:border-[#b4c9eb] hover:bg-[#f4f8ff] dark:border-[#3d5888] dark:bg-[#101f38] dark:text-[#b7cbef] dark:hover:border-[#5d7daf] dark:hover:bg-[#132744]"
+                className="shrink-0 whitespace-nowrap rounded-full border border-[#d4e0f2] bg-white/70 px-2 py-1 text-[#4f688f] transition hover:border-[#b4c9eb] hover:bg-[#f4f8ff] sm:px-2.5 dark:border-[#3d5888] dark:bg-[#101f38] dark:text-[#b7cbef] dark:hover:border-[#5d7daf] dark:hover:bg-[#132744]"
                 href="#"
               >
                 Changelog
               </a>
               <a
-                className="rounded-full border border-[#d4e0f2] bg-white/70 px-2.5 py-1 text-[#4f688f] transition hover:border-[#b4c9eb] hover:bg-[#f4f8ff] dark:border-[#3d5888] dark:bg-[#101f38] dark:text-[#b7cbef] dark:hover:border-[#5d7daf] dark:hover:bg-[#132744]"
+                className="shrink-0 whitespace-nowrap rounded-full border border-[#d4e0f2] bg-white/70 px-2 py-1 text-[#4f688f] transition hover:border-[#b4c9eb] hover:bg-[#f4f8ff] sm:px-2.5 dark:border-[#3d5888] dark:bg-[#101f38] dark:text-[#b7cbef] dark:hover:border-[#5d7daf] dark:hover:bg-[#132744]"
                 href="#"
               >
                 Contact
