@@ -1,36 +1,114 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Data Dash
 
-## Getting Started
+Production-ready crypto analytics dashboard built with Next.js App Router, React 19, and TypeScript.
 
-First, run the development server:
+Data Dash aggregates market data, derives directional signals, and renders a realtime-style dashboard focused on high-volatility assets. The app is designed to degrade gracefully: when live providers fail, it serves deterministic fallback data so the UI remains stable and demo-safe.
+
+## Highlights
+
+- Live + fallback data pipeline for resilient dashboards
+- REST endpoints for analytics snapshots and outbound webhook alerts
+- Typed domain models across server and UI layers
+- Server-side rendering with incremental revalidation
+- Security headers configured at the framework boundary
+
+## Tech Stack
+
+- Framework: Next.js 16 (App Router)
+- Runtime: Node.js
+- UI: React 19
+- Language: TypeScript
+- Linting: ESLint 9
+- Styling: Tailwind CSS v4 (PostCSS integration)
+- Market Data: CoinGecko public API
+
+## Quick Start
+
+### Prerequisites
+
+- Node.js 20+
+- npm 10+ (or Bun, pnpm, yarn)
+
+### Install
+
+```bash
+npm install
+```
+
+### Run locally
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+App will be available at `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Validate
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run lint
+npm run build
+```
 
-## Learn More
+## Scripts
 
-To learn more about Next.js, take a look at the following resources:
+- `npm run dev`: local development server
+- `npm run dev:preview`: bind server to `0.0.0.0:3000`
+- `npm run build`: production build
+- `npm run start`: run production server
+- `npm run lint`: lint the codebase
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## API Surface
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `GET /api/arena?interval=7d&ids=dogecoin,shiba-inu`
+  - Returns dashboard payload (`source` is `live` or `fallback`)
+  - Response is cached (`max-age=60`, `stale-while-revalidate=240`)
+- `POST /api/alerts/webhook`
+  - Validates HTTPS destination
+  - Forwards payload to external webhook endpoint
 
-## Deploy on Vercel
+Detailed contracts: `docs/API.md`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Project Structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```txt
+app/
+  api/
+    alerts/webhook/route.ts
+    arena/route.ts
+  layout.tsx
+  page.tsx
+components/dashboard/
+lib/
+  live-analytics.ts
+utils/
+docs/
+```
+
+## Documentation
+
+- Architecture: `docs/ARCHITECTURE.md`
+- API contracts: `docs/API.md`
+- Deployment guide: `docs/DEPLOYMENT.md`
+- Observability and operations: `docs/OPERATIONS.md`
+- Security model: `docs/SECURITY.md`
+- Contribution workflow: `CONTRIBUTING.md`
+
+## Security
+
+- Global CSP frame policy and `X-Frame-Options` in production (`next.config.ts`)
+- Webhook endpoint enforces HTTPS URLs
+- No secrets currently required for baseline operation
+
+For policy and hardening guidance, see `docs/SECURITY.md`.
+
+## Roadmap (Suggested)
+
+- Add provider abstraction and retries with circuit breaking
+- Introduce structured logging and distributed trace correlation
+- Add integration tests for API routes and fallback behavior
+- Add rate limiting and request authentication for alert webhooks
+
+## License
+
+No license file is currently defined in this repository.
