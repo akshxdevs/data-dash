@@ -126,7 +126,6 @@ Full request and response examples are documented in `docs/API.md`.
 - [Deployment](docs/DEPLOYMENT.md)
 - [Operations](docs/OPERATIONS.md)
 - [Security](docs/SECURITY.md)
-- [Contributing](CONTRIBUTING.md)
 
 ## Security
 
