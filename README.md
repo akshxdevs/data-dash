@@ -1,17 +1,30 @@
 # Data Dash
 
-Crypto analytics dashboard built with Next.js App Router, React 19, and TypeScript.
+Server-rendered memecoin analytics dashboard with CoinGecko-backed snapshots, typed fallback data, and an HTTPS webhook relay.
 
-Data Dash renders a memecoin-focused market dashboard from live CoinGecko data and falls back to deterministic demo-safe data when upstream requests fail. The same data layer powers the server-rendered home page and the public arena API.
+![Next.js 16.1.6](https://img.shields.io/badge/Next.js-16.1.6-000000?logo=nextdotjs)
+![React 19.2.3](https://img.shields.io/badge/React-19.2.3-20232a?logo=react)
+![TypeScript 5](https://img.shields.io/badge/TypeScript-5-3178c6?logo=typescript&logoColor=white)
+![Tailwind CSS 4](https://img.shields.io/badge/Tailwind_CSS-4-06b6d4?logo=tailwindcss&logoColor=white)
 
-## What It Does
+## Overview
 
-- Server-renders the main dashboard from a typed analytics payload
-- Tracks a fixed watchlist of memecoins across Dogecoin, Ethereum, and Solana ecosystems
-- Derives sentiment, momentum, velocity, holder strength, whale pressure, heatmaps, and wallet flow views
-- Exposes a cacheable JSON snapshot API at `/api/arena`
-- Relays outbound alert payloads through `/api/alerts/webhook`
-- Preserves contract shape when live provider calls fail by returning fallback data with `source: "fallback"`
+Data Dash is a small full-stack Next.js application. The home page and `GET /api/arena` both use the same typed analytics pipeline in `lib/live-analytics.ts`, which:
+
+- fetches market and chart data for a fixed watchlist from CoinGecko
+- derives sentiment, momentum, velocity, holder-strength, whale-pressure, heat-map, and wallet-flow views
+- returns contract-complete fallback data when provider requests fail
+
+The repository also exposes `POST /api/alerts/webhook`, a simple HTTPS-only webhook relay for forwarding alert payloads.
+
+## Features
+
+- Server-rendered dashboard at `/` with 5-minute revalidation
+- Public JSON snapshot API at `/api/arena`
+- Interval support for `1h`, `24h`, `7d`, and `30d`
+- Optional token filtering with a minimum-three-token guardrail before falling back to the full watchlist
+- Shared live/fallback data contract across the UI and API
+- HTTPS validation for outbound webhook destinations
 
 ## Stack
 
@@ -38,42 +51,46 @@ utils/
 docs/
 ```
 
-## Local Development
-
-### Requirements
+## Requirements
 
 - Node.js 20+
 - npm 10+ or Bun
 - Outbound access to `api.coingecko.com`
 
-### Install
+## Development
+
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-### Start the app
+Start the app:
 
 ```bash
 npm run dev
 ```
 
-The app runs at `http://localhost:3000`.
+Preview on `0.0.0.0:3000`:
 
-### Validate before shipping
+```bash
+npm run dev:preview
+```
+
+Run validation:
 
 ```bash
 npm run lint
 npm run build
 ```
 
-## Available Scripts
+The local app runs at `http://localhost:3000`.
 
-- `npm run dev` starts the local Next.js dev server
-- `npm run dev:preview` starts the dev server on `0.0.0.0:3000`
-- `npm run build` creates the production build
-- `npm run start` serves the production build
-- `npm run lint` runs ESLint
+## Configuration
+
+No environment variables are required for baseline operation.
+
+The existing docs mention future optional variables such as `COINGECKO_API_KEY`, `ALERT_WEBHOOK_ALLOWLIST`, and `LOG_LEVEL`, but those are not currently consumed by the application code.
 
 ## API
 
@@ -81,10 +98,12 @@ npm run build
 
 Returns an analytics snapshot for the requested interval and optional token subset.
 
-Query params:
+Query parameters:
 
 - `interval`: `1h`, `24h`, `7d`, or `30d` (`7d` by default)
 - `ids`: comma-separated watchlist IDs such as `dogecoin,shiba-inu,pepe`
+
+If fewer than three valid IDs are supplied, the route falls back to the full watchlist.
 
 Example:
 
@@ -92,9 +111,11 @@ Example:
 curl "http://localhost:3000/api/arena?interval=24h&ids=dogecoin,shiba-inu,pepe"
 ```
 
-The route responds with cache headers:
+Response caching:
 
-- `public, max-age=60, s-maxage=60, stale-while-revalidate=240`
+- `cache-control: public, max-age=60, s-maxage=60, stale-while-revalidate=240`
+
+If CoinGecko requests fail, the route still returns `200` with `source: "fallback"`.
 
 ### `POST /api/alerts/webhook`
 
@@ -108,16 +129,21 @@ curl -X POST "http://localhost:3000/api/alerts/webhook" \
   -d '{"url":"https://example.com/webhook","message":"threshold crossed"}'
 ```
 
-If `payload` is omitted, the route sends a default object with `text` and `timestamp`.
+Rules:
 
-Full request and response examples are documented in `docs/API.md`.
+- `url` is required and must use `https://`
+- when `payload` is omitted, the route sends a default object with `text` and `timestamp`
 
-## Runtime Notes
+Full request and response examples are in [docs/API.md](docs/API.md).
 
-- `app/page.tsx` uses `revalidate = 300`
-- Provider fetches in `lib/live-analytics.ts` use Next.js revalidation hints
-- No database, queue, or worker is currently required
-- No environment variables are required for baseline operation
+## Architecture Notes
+
+- [`app/page.tsx`](app/page.tsx) server-renders the dashboard shell and exports `revalidate = 300`
+- [`lib/live-analytics.ts`](lib/live-analytics.ts) contains the provider fetches, data shaping, scoring logic, and fallback orchestration
+- [`app/api/arena/route.ts`](app/api/arena/route.ts) exposes the cacheable analytics snapshot API
+- [`app/api/alerts/webhook/route.ts`](app/api/alerts/webhook/route.ts) handles outbound webhook forwarding
+
+The app is stateless today. There is no database, queue, background worker, or committed automated test suite in this repository.
 
 ## Documentation
 
@@ -127,17 +153,11 @@ Full request and response examples are documented in `docs/API.md`.
 - [Operations](docs/OPERATIONS.md)
 - [Security](docs/SECURITY.md)
 
-## Security
+## Security Notes
 
-- Security headers are configured in `next.config.ts`
-- Webhook forwarding only accepts `https://` destinations
-- API routes do not currently implement authentication or rate limiting
-
-## Current Limits
-
-- Historical analytics are not persisted
-- There is no committed automated test suite yet
-- Provider access depends on CoinGecko availability unless fallback mode is used
+- `next.config.ts` sets a `Content-Security-Policy` `frame-ancestors` header and adds `X-Frame-Options: SAMEORIGIN` outside development
+- the webhook relay validates URL parsing and enforces `https://`
+- public API routes do not currently implement authentication, authorization, or rate limiting
 
 ## License
 
